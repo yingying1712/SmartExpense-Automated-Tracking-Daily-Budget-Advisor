@@ -4,6 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>SmartExpense - Mobile Budgeting</title>
+    
+    <!-- Mobile PWA Meta Tags -->
+    <meta name="theme-color" content="#FAF8F5">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="SmartExpense">
+
+    <!-- Inline Web App Manifest Data URL -->
+    <link rel="manifest" href='data:application/manifest+json,{
+        "name": "SmartExpense Tracker",
+        "short_name": "SmartExpense",
+        "start_url": "./",
+        "display": "standalone",
+        "background_color": "#EFE7DC",
+        "theme_color": "#FAF8F5",
+        "description": "Simple Auto-Expense Tracker for Mobile & Wallets",
+        "icons": [
+            {
+                "src": "https://placehold.co/192x192/fef3c7/92400e?text=%F0%9F%90%B9",
+                "sizes": "192x192",
+                "type": "image/png"
+            },
+            {
+                "src": "https://placehold.co/512x512/fef3c7/92400e?text=%F0%9F%90%B9",
+                "sizes": "512x512",
+                "type": "image/png"
+            }
+        ]
+    }'>
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -86,10 +117,16 @@
                     <p class="text-[10px] text-cream-500 font-medium mt-0.5">Simple Auto-Expense Tracker</p>
                 </div>
             </div>
-            <button onclick="triggerSimulatedNotification()" class="px-2.5 py-1 rounded-full bg-amber-100 border border-amber-200 text-amber-900 text-[11px] font-bold flex items-center gap-1 hover:bg-amber-200 active:scale-95 shadow-sm">
-                <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
-                Sim Alert ✨
-            </button>
+            
+            <div class="flex items-center gap-1.5">
+                <button id="pwa-install-btn" onclick="triggerPWAInstall()" class="px-2 py-1 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-900 text-[11px] font-bold flex items-center gap-1 hover:bg-emerald-200 active:scale-95 shadow-sm transition">
+                    <i class="fa-solid fa-download text-[10px]"></i> Install
+                </button>
+                <button onclick="triggerSimulatedNotification()" class="px-2.5 py-1 rounded-full bg-amber-100 border border-amber-200 text-amber-900 text-[11px] font-bold flex items-center gap-1 hover:bg-amber-200 active:scale-95 shadow-sm">
+                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+                    Sim Alert ✨
+                </button>
+            </div>
         </header>
 
         <!-- Main View (Single Page) -->
@@ -965,7 +1002,65 @@
         // Initialize App on Page Load
         window.onload = function() {
             renderAll();
+            initServiceWorkerAndPWA();
+        };
+
+        let deferredPrompt;
+        
+        function initServiceWorkerAndPWA() {
+            // Register an in-memory service worker via Blob to satisfy PWA installation prerequisites
+            if ('serviceWorker' in navigator) {
+                const swCode = `
+                    self.addEventListener('install', (e) => {
+                        self.skipWaiting();
+                    });
+                    self.addEventListener('activate', (e) => {
+                        return self.clients.claim();
+                    });
+                    self.addEventListener('fetch', (e) => {
+                        // Pass-through fetch handler for online app usage
+                    });
+                `;
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                navigator.serviceWorker.register(swUrl).catch(err => {
+                    console.log('SW registration note:', err);
+                });
+            }
+
+            // Capture the beforeinstallprompt event for standard PWA installation
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                const installBtn = document.getElementById('pwa-install-btn');
+                if (installBtn) {
+                    installBtn.classList.remove('hidden');
+                }
+            });
+
+            // Detect if already launched in standalone mode
+            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+                const installBtn = document.getElementById('pwa-install-btn');
+                if (installBtn) installBtn.classList.add('hidden');
+            }
+        }
+
+        window.triggerPWAInstall = function() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        showToast("App installed successfully! 🎉");
+                        const installBtn = document.getElementById('pwa-install-btn');
+                        if (installBtn) installBtn.classList.add('hidden');
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                // Instructions fallback for iOS Safari or browsers without immediate prompt event
+                showToast("Tap browser menu (or Share button on iOS) and select 'Add to Home Screen' 📲");
+            }
         };
     </script>
 </body>
-</html> 
+</html>
