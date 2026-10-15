@@ -108,7 +108,7 @@
         <header class="pt-5 px-4 pb-3 glass-header border-b border-cream-200 flex items-center justify-between z-20 shrink-0">
             <div class="flex items-center space-x-2">
                 <div class="w-10 h-10 rounded-2xl bg-amber-100 border border-amber-300 flex items-center justify-center shadow-sm overflow-hidden shrink-0">
-                    <img src="image_e68d20.jpg" alt="SmartExpense Mascot" class="w-full h-full object-cover object-center" onerror="this.onerror=null; this.src='https://placehold.co/80x80/fef3c7/92400e?text=🐹';">
+                    <img src="image_f2d26b.jpg" alt="SmartExpense Mascot" class="w-full h-full object-cover object-center" onerror="this.onerror=null; this.src='https://placehold.co/80x80/fef3c7/92400e?text=🐹';">
                 </div>
                 <div>
                     <h1 class="text-sm font-extrabold text-cream-900 leading-none flex items-center gap-1">
@@ -119,9 +119,6 @@
             </div>
             
             <div class="flex items-center gap-1.5">
-                <button id="pwa-install-btn" onclick="triggerPWAInstall()" class="px-2 py-1 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-900 text-[11px] font-bold flex items-center gap-1 hover:bg-emerald-200 active:scale-95 shadow-sm transition">
-                    <i class="fa-solid fa-download text-[10px]"></i> Install
-                </button>
                 <button onclick="triggerSimulatedNotification()" class="px-2.5 py-1 rounded-full bg-amber-100 border border-amber-200 text-amber-900 text-[11px] font-bold flex items-center gap-1 hover:bg-amber-200 active:scale-95 shadow-sm">
                     <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
                     Sim Alert ✨
@@ -1002,64 +999,6 @@
         // Initialize App on Page Load
         window.onload = function() {
             renderAll();
-            initServiceWorkerAndPWA();
-        };
-
-        let deferredPrompt;
-        
-        function initServiceWorkerAndPWA() {
-            // Register an in-memory service worker via Blob to satisfy PWA installation prerequisites
-            if ('serviceWorker' in navigator) {
-                const swCode = `
-                    self.addEventListener('install', (e) => {
-                        self.skipWaiting();
-                    });
-                    self.addEventListener('activate', (e) => {
-                        return self.clients.claim();
-                    });
-                    self.addEventListener('fetch', (e) => {
-                        // Pass-through fetch handler for online app usage
-                    });
-                `;
-                const blob = new Blob([swCode], { type: 'application/javascript' });
-                const swUrl = URL.createObjectURL(blob);
-                navigator.serviceWorker.register(swUrl).catch(err => {
-                    console.log('SW registration note:', err);
-                });
-            }
-
-            // Capture the beforeinstallprompt event for standard PWA installation
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                deferredPrompt = e;
-                const installBtn = document.getElementById('pwa-install-btn');
-                if (installBtn) {
-                    installBtn.classList.remove('hidden');
-                }
-            });
-
-            // Detect if already launched in standalone mode
-            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
-                const installBtn = document.getElementById('pwa-install-btn');
-                if (installBtn) installBtn.classList.add('hidden');
-            }
-        }
-
-        window.triggerPWAInstall = function() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        showToast("App installed successfully! 🎉");
-                        const installBtn = document.getElementById('pwa-install-btn');
-                        if (installBtn) installBtn.classList.add('hidden');
-                    }
-                    deferredPrompt = null;
-                });
-            } else {
-                // Instructions fallback for iOS Safari or browsers without immediate prompt event
-                showToast("Tap browser menu (or Share button on iOS) and select 'Add to Home Screen' 📲");
-            }
         };
     </script>
 </body>
