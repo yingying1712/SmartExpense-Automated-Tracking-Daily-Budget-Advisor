@@ -11,26 +11,33 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="SmartExpense">
+    <link rel="apple-touch-icon" href="https://placehold.co/180x180/fef3c7/92400e?text=%F0%9F%90%B9">
 
     <!-- Inline Web App Manifest Data URL -->
     <link rel="manifest" href='data:application/manifest+json,{
+        "id": "/",
         "name": "SmartExpense Tracker",
         "short_name": "SmartExpense",
         "start_url": "./",
+        "scope": "./",
         "display": "standalone",
-        "background_color": "#EFE7DC",
+        "orientation": "portrait",
+        "background_color": "#FAF8F5",
         "theme_color": "#FAF8F5",
         "description": "Simple Auto-Expense Tracker for Mobile & Wallets",
+        "prefer_related_applications": false,
         "icons": [
             {
                 "src": "https://placehold.co/192x192/fef3c7/92400e?text=%F0%9F%90%B9",
                 "sizes": "192x192",
-                "type": "image/png"
+                "type": "image/png",
+                "purpose": "any maskable"
             },
             {
                 "src": "https://placehold.co/512x512/fef3c7/92400e?text=%F0%9F%90%B9",
                 "sizes": "512x512",
-                "type": "image/png"
+                "type": "image/png",
+                "purpose": "any maskable"
             }
         ]
     }'>
