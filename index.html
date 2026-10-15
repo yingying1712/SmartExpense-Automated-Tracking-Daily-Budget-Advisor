@@ -3,28 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>SmartExpense - Easy Budget & Auto Tracking</title>
+    <title>SmartExpense - Mobile Budgeting & Auto Track</title>
     
-    <!-- Web App Manifest -->
-    <link rel="manifest" href="data:application/manifest+json;utf8,{
-        %22name%22:%22SmartExpense%20Advisor%22,
-        %22short_name%22:%22SmartExpense%22,
-        %22start_url%22:%22.%22,
-        %22display%22:%22standalone%22,
-        %22background_color%22:%22%232C251E%22,
-        %22theme_color%22:%22%232C251E%22,
-        %22icons%22:[{%22src%22:%22https://cdn-icons-png.flaticon.com/512/2845/2845722.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]
-    }">
+    <!-- Mobile PWA Meta Tags -->
+    <meta name="theme-color" content="#2C251E">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="SmartExpense">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2845/2845722.png">
+
+    <!-- Inline Web App Manifest Data URL -->
+    <link rel="manifest" href='data:application/manifest+json,{
+        "name": "SmartExpense Tracker",
+        "short_name": "SmartExpense",
+        "start_url": "./",
+        "scope": "./",
+        "display": "standalone",
+        "orientation": "portrait",
+        "background_color": "#2C251E",
+        "theme_color": "#2C251E",
+        "description": "Simple Auto-Expense Tracker for Mobile & Wallets",
+        "icons": [
+            {
+                "src": "https://cdn-icons-png.flaticon.com/512/2845/2845722.png",
+                "sizes": "512x512",
+                "type": "image/png",
+                "purpose": "any maskable"
+            }
+        ]
+    }'>
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
+    <!-- Google Fonts Plus Jakarta Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <script>
@@ -52,18 +66,15 @@
                         },
                         accent: {
                             emerald: '#2D6A4F',
-                            emeraldLight: '#D8F3DC',
                             rose: '#BC4749',
-                            roseLight: '#FAD2E1',
                             amber: '#D97706',
-                            amberLight: '#FEF3C7',
+                            brown: '#8D5B4C',
                         }
                     }
                 }
             }
         }
     </script>
-    
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -71,13 +82,11 @@
             user-select: none;
             background-color: #2C251E;
         }
-        
         @media (min-width: 768px) {
             body {
                 background-color: #EFE7DC;
             }
         }
-
         .hide-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -85,853 +94,964 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
-
         .beige-card {
             background: #FAF8F5;
-            box-shadow: 0 10px 25px -5px rgba(74, 64, 53, 0.05), 0 8px 10px -6px rgba(74, 64, 53, 0.03);
+            box-shadow: 0 4px 15px -3px rgba(74, 64, 53, 0.05);
         }
-
-        .glass-nav {
-            background: rgba(250, 248, 245, 0.94);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-        }
-
-        .app-container {
-            height: 100vh;
-            height: 100dvh;
-            max-width: 100%;
-        }
-
-        @media (min-width: 768px) {
-            .app-container {
-                max-width: 430px;
-                height: 900px;
-                max-height: 94vh;
-                border-radius: 44px;
-            }
+        .glass-header {
+            background: rgba(250, 248, 245, 0.95);
+            backdrop-filter: blur(12px);
         }
     </style>
 </head>
-<body class="text-cream-900 min-h-screen flex justify-center items-center p-0 md:p-6 overflow-hidden">
+<body class="text-cream-900 min-h-screen flex justify-center items-center p-0 md:p-4">
 
-    <div class="app-container w-full bg-sand-100 shadow-2xl flex flex-col relative overflow-hidden border-0 md:border border-cream-200">
+    <div class="w-full max-w-md h-screen md:h-[915px] bg-sand-100 md:rounded-[40px] shadow-2xl flex flex-col relative overflow-hidden border border-cream-200">
 
-        <!-- Top Header Navigation -->
-        <header class="pt-10 md:pt-6 px-5 pb-3.5 glass-nav border-b border-cream-200/80 flex items-center justify-between z-20 shrink-0">
-            <div class="flex items-center space-x-3">
-                <div class="w-9 h-9 rounded-xl bg-cream-900 text-cream-50 flex items-center justify-center text-sm font-bold shadow-md">
-                    <i class="fa-solid fa-piggy-bank"></i>
+        <!-- Header Navigation -->
+        <header class="pt-8 md:pt-5 px-4 pb-3 glass-header border-b border-cream-200 flex items-center justify-between z-20 shrink-0">
+            <div class="flex items-center space-x-2">
+                <div class="w-9 h-9 rounded-2xl bg-amber-100 border border-amber-300 flex items-center justify-center shadow-sm shrink-0 text-lg">
+                    🧸
                 </div>
                 <div>
-                    <div class="flex items-center gap-2">
-                        <h1 class="text-sm font-extrabold text-cream-900 tracking-tight">
-                            SmartExpense
-                        </h1>
-                        <span class="text-[9px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded-full flex items-center gap-1">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Auto Tracker
-                        </span>
-                    </div>
-                    <p class="text-[10px] text-cream-500 font-medium mt-0.5">Simple Budget & Bank Sync</p>
+                    <h1 class="text-sm font-extrabold text-cream-900 leading-none flex items-center gap-1">
+                        SmartExpense 🧸
+                    </h1>
+                    <p class="text-[10px] text-cream-500 font-medium mt-0.5">Simple Auto-Expense Tracker</p>
                 </div>
             </div>
-
+            
             <div class="flex items-center gap-1.5">
-                <button onclick="openAccountsModal()" class="px-2.5 py-1.5 rounded-xl bg-cream-100 hover:bg-cream-200 border border-cream-200 text-cream-800 text-xs font-bold flex items-center gap-1 transition active:scale-95 shadow-sm">
-                    <i class="fa-solid fa-building-columns text-cream-600"></i>
-                    <span>Balances</span>
-                </button>
-                <button onclick="triggerSimulatedNotification()" class="px-2.5 py-1.5 rounded-xl bg-amber-100/80 border border-amber-200 text-amber-900 text-xs font-bold flex items-center gap-1 hover:bg-amber-200 transition active:scale-95 shadow-sm">
-                    <i class="fa-solid fa-bolt text-amber-600 text-xs"></i>
-                    <span>Sim</span>
+                <!-- Sim Alert Trigger Button -->
+                <button onclick="triggerSimulatedNotification()" class="px-2.5 py-1 rounded-full bg-amber-100 border border-amber-200 text-amber-900 text-[11px] font-bold flex items-center gap-1 hover:bg-amber-200 active:scale-95 shadow-sm">
+                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+                    Sim Alert ✨
                 </button>
             </div>
         </header>
 
-        <main class="flex-1 overflow-y-auto hide-scrollbar px-4 pt-4 pb-28 space-y-4">
+        <main class="flex-1 overflow-y-auto hide-scrollbar px-4 pt-4 pb-20 space-y-4">
 
-            <!-- Simplified Budget Overview Card -->
-            <section class="beige-card border border-cream-200/80 rounded-3xl p-5 relative overflow-hidden">
-                <div class="flex justify-between items-center mb-3">
-                    <div class="flex items-center gap-2">
-                        <span id="budget-mode-badge" class="text-[10px] font-extrabold uppercase tracking-wider text-amber-900 bg-amber-100 border border-amber-200 px-2.5 py-1 rounded-full inline-flex items-center gap-1">
-                            <i class="fa-solid fa-bullseye"></i> Daily Budget
-                        </span>
+            <!-- PWA Native Install Banner -->
+            <section id="pwa-install-banner" class="bg-gradient-to-r from-emerald-800 to-emerald-900 text-white rounded-2xl p-3.5 shadow-lg flex items-center justify-between border border-emerald-700">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-xl shrink-0">
+                        📱
                     </div>
-                    <button onclick="openBudgetModal()" class="text-xs font-extrabold text-cream-800 hover:text-cream-900 bg-cream-100 hover:bg-cream-200 px-3 py-1.5 rounded-xl border border-cream-200 transition shadow-sm flex items-center gap-1.5">
-                        <i class="fa-solid fa-sliders text-cream-500 text-xs"></i> Adjust Budget
-                    </button>
+                    <div>
+                        <h3 class="text-xs font-extrabold text-white">Install App on Phone</h3>
+                        <p class="text-[10px] text-emerald-100">Add to Home Screen as Real App</p>
+                    </div>
                 </div>
+                <button id="pwa-install-btn" onclick="triggerPwaInstall()" class="px-3 py-1.5 rounded-xl bg-white text-emerald-900 text-xs font-extrabold shadow hover:bg-emerald-50 active:scale-95 transition shrink-0 flex items-center gap-1">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Install</span>
+                </button>
+            </section>
 
-                <!-- Safe Spend Display -->
-                <div class="my-3">
-                    <span class="text-xs font-semibold text-cream-500 block mb-0.5">Left to Spend Today</span>
-                    <div class="flex items-baseline gap-1">
+            <!-- SECTION 1: BIG BALANCE & COMPACT BUDGET -->
+            <section class="beige-card border border-cream-200/90 rounded-3xl p-4 relative overflow-hidden space-y-3">
+                <!-- Main Big Balance -->
+                <div class="text-center pt-1 pb-2 border-b border-cream-200/70">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-cream-500">Total Net Balance</span>
+                    <div class="flex items-baseline justify-center gap-1 mt-1">
                         <span class="text-sm font-extrabold text-cream-500">RM</span>
-                        <span id="daily-remaining" class="font-extrabold text-cream-900 tracking-tight text-3xl">0.00</span>
+                        <h2 id="total-net-balance" class="text-3xl font-extrabold tracking-tight text-cream-900">0.00</h2>
                     </div>
                 </div>
 
-                <!-- Daily Progress Bar -->
-                <div class="space-y-1.5 mb-3">
-                    <div class="flex justify-between text-xs font-medium text-cream-500">
-                        <span>Spent: <strong id="today-spent-text" class="text-cream-900 font-bold">RM 0.00</strong></span>
-                        <span id="daily-limit-text" class="font-bold text-cream-800">Target: RM 0.00</span>
+                <!-- Compact Daily Safe Budget -->
+                <div class="bg-sand-100 rounded-2xl p-3 border border-cream-200 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-base">🛡️</span>
+                            <div>
+                                <h3 class="text-xs font-bold text-cream-900">Safe Daily Limit</h3>
+                                <p class="text-[10px] text-cream-500">RM <span id="spent-today-val">0.00</span> spent today</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span id="daily-remaining-val" class="text-sm font-extrabold text-emerald-800">RM 0.00</span>
+                            <button onclick="openBudgetModal()" class="block text-[10px] font-bold text-amber-700 hover:underline ml-auto">
+                                Target: RM <span id="target-monthly-val">1500</span> ⚙️
+                            </button>
+                        </div>
                     </div>
-                    <div class="w-full bg-cream-200/60 rounded-full h-3 overflow-hidden p-0.5 border border-cream-200 shadow-inner">
-                        <div id="daily-progress-bar" class="bg-accent-emerald h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                </div>
 
-                <!-- Dynamic Friendly Advice Box -->
-                <div id="smart-advice-box" class="bg-sand-100 rounded-2xl p-3 border border-cream-200/90 text-xs text-cream-800 flex items-center gap-2.5 shadow-sm">
-                    <div id="advice-icon-bg" class="w-7 h-7 rounded-xl bg-amber-100 border border-amber-200 flex items-center justify-center text-amber-800 shrink-0 text-xs">
-                        <i id="advice-icon" class="fa-solid fa-face-smile"></i>
+                    <!-- Progress Bar -->
+                    <div class="w-full bg-cream-200/80 rounded-full h-2.5 overflow-hidden p-0.5 border border-cream-200">
+                        <div id="daily-progress-bar" class="bg-emerald-600 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
                     </div>
-                    <p id="smart-advice-text" class="leading-relaxed font-medium text-[11px] text-cream-800">Calculating spending status...</p>
+
+                    <p id="mascot-tip-text" class="text-[10px] text-cream-800 font-medium italic text-center">
+                        🧸 Calculating daily pace...
+                    </p>
                 </div>
             </section>
 
-            <!-- Quick One-Tap Add Expense Buttons -->
+            <!-- Quick 1-Tap Record -->
             <div class="beige-card border border-cream-200/80 rounded-2xl p-3 space-y-2">
                 <span class="text-[10px] font-bold uppercase tracking-wider text-cream-500 flex items-center justify-between">
-                    <span>⚡ Quick Add Expense</span>
-                    <span class="text-[9px] text-cream-400 font-normal">1-Tap Record</span>
+                    <span>⚡ Quick 1-Tap Record</span>
                 </span>
-                <div class="grid grid-cols-4 gap-2">
-                    <button onclick="quickAddExpense(5, '☕ Coffee / Drink', 'Touch \'n Go eWallet', 'Food')" class="p-2 bg-sand-100 hover:bg-cream-200 rounded-xl border border-cream-200 text-center transition active:scale-95">
+                <div class="grid grid-cols-4 gap-1.5">
+                    <button onclick="quickAddExpense(5, '☕ Coffee / Drink', 'Food & Dining')" class="p-2 bg-sand-100 hover:bg-cream-200 rounded-xl border border-cream-200 text-center transition active:scale-95">
                         <span class="text-xs font-extrabold text-cream-900 block">+RM 5</span>
                         <span class="text-[9px] text-cream-500 truncate block">☕ Drink</span>
                     </button>
-                    <button onclick="quickAddExpense(12, '🍚 Lunch Meal', 'Touch \'n Go eWallet', 'Food')" class="p-2 bg-sand-100 hover:bg-cream-200 rounded-xl border border-cream-200 text-center transition active:scale-95">
+                    <button onclick="quickAddExpense(12, '🍚 Lunch Meal', 'Food & Dining')" class="p-2 bg-sand-100 hover:bg-cream-200 rounded-xl border border-cream-200 text-center transition active:scale-95">
                         <span class="text-xs font-extrabold text-cream-900 block">+RM 12</span>
                         <span class="text-[9px] text-cream-500 truncate block">🍚 Meal</span>
                     </button>
-                    <button onclick="quickAddExpense(20, '🚗 Petrol / Transport', 'Maybank (MAE / M2U)', 'Transport')" class="p-2 bg-sand-100 hover:bg-cream-200 rounded-xl border border-cream-200 text-center transition active:scale-95">
+                    <button onclick="quickAddExpense(20, '🚗 Petrol', 'Transportation')" class="p-2 bg-sand-100 hover:bg-cream-200 rounded-xl border border-cream-200 text-center transition active:scale-95">
                         <span class="text-xs font-extrabold text-cream-900 block">+RM 20</span>
                         <span class="text-[9px] text-cream-500 truncate block">🚗 Petrol</span>
                     </button>
-                    <button onclick="quickAddExpense(30, '🛒 Groceries', 'Touch \'n Go eWallet', 'Groceries')" class="p-2 bg-sand-100 hover:bg-cream-200 rounded-xl border border-cream-200 text-center transition active:scale-95">
+                    <button onclick="quickAddExpense(30, '🛒 Groceries', 'Groceries')" class="p-2 bg-sand-100 hover:bg-cream-200 rounded-xl border border-cream-200 text-center transition active:scale-95">
                         <span class="text-xs font-extrabold text-cream-900 block">+RM 30</span>
                         <span class="text-[9px] text-cream-500 truncate block">🛒 Market</span>
                     </button>
                 </div>
             </div>
 
-            <div class="space-y-2">
+            <!-- SECTION 2: ACCOUNTS & E-WALLETS -->
+            <section class="space-y-2">
                 <div class="flex justify-between items-center px-1">
-                    <h3 class="text-xs font-bold text-cream-500 uppercase tracking-wider">Account Balances</h3>
-                    <button onclick="openAccountsModal()" class="text-[11px] font-bold text-amber-800 hover:underline">Manage Balances</button>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-cream-500">Your Accounts & Wallets</h3>
+                    <button onclick="openAddAccountModal()" class="text-[10px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-lg border border-amber-200 hover:bg-amber-200">
+                        + Add Account
+                    </button>
                 </div>
-                <div id="accounts-cards-container" class="grid grid-cols-2 gap-2.5">
+
+                <div class="grid grid-cols-2 gap-2" id="accounts-grid-container">
                     <!-- Dynamic Account Cards -->
                 </div>
-            </div>
+            </section>
 
-            <!-- Daily Expense vs Income Overview Summary -->
-            <div class="grid grid-cols-2 gap-3">
-                <div class="beige-card border border-cream-200 rounded-2xl p-3.5">
-                    <div class="flex items-center gap-2 text-accent-rose text-xs font-bold mb-1">
-                        <div class="w-7 h-7 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center text-xs shadow-sm">
-                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        </div>
-                        Spent Today
-                    </div>
-                    <p id="today-debit" class="text-lg font-extrabold text-cream-900">RM 0.00</p>
-                    <span id="debit-count" class="text-[10px] text-cream-500 font-medium">0 transactions</span>
+            <!-- SECTION 3: SPENDING GROUPS -->
+            <section class="beige-card border border-cream-200 rounded-3xl p-4 space-y-3">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xs font-bold text-cream-900 flex items-center gap-1.5">
+                        <span>📊 Spending Breakdown</span>
+                    </h3>
+                    <span class="text-[10px] font-bold text-cream-500">This Month</span>
                 </div>
 
-                <div class="beige-card border border-cream-200 rounded-2xl p-3.5">
-                    <div class="flex items-center gap-2 text-accent-emerald text-xs font-bold mb-1">
-                        <div class="w-7 h-7 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-xs shadow-sm">
-                            <i class="fa-solid fa-arrow-down-left-and-arrow-up-right-to-inside"></i>
-                        </div>
-                        Income Today
-                    </div>
-                    <p id="today-credit" class="text-lg font-extrabold text-cream-900">RM 0.00</p>
-                    <span id="credit-count" class="text-[10px] text-cream-500 font-medium">0 deposits</span>
+                <div id="category-groups-list" class="space-y-2.5 text-xs">
+                    <!-- Dynamic Progress Bars -->
                 </div>
-            </div>
+            </section>
 
-            <div class="bg-cream-100 p-1 rounded-2xl border border-cream-200/80 flex text-xs font-semibold gap-1">
-                <button onclick="switchPeriod('daily')" id="tab-daily" class="flex-1 py-2 rounded-xl text-center transition bg-cream-900 text-cream-50 shadow-sm">Daily</button>
-                <button onclick="switchPeriod('weekly')" id="tab-weekly" class="flex-1 py-2 rounded-xl text-center transition text-cream-500 hover:text-cream-900">Weekly</button>
-                <button onclick="switchPeriod('monthly')" id="tab-monthly" class="flex-1 py-2 rounded-xl text-center transition text-cream-500 hover:text-cream-900">Monthly</button>
-            </div>
-
-            <!-- Dynamic Overview Card based on Tab -->
-            <div id="period-summary-card" class="beige-card border border-cream-200 rounded-2xl p-4 space-y-3">
-                <div class="flex justify-between items-center border-b border-cream-200/80 pb-2.5">
-                    <span id="period-title" class="text-xs font-bold text-cream-900 uppercase tracking-wider flex items-center gap-1.5">
-                         <i class="fa-regular fa-calendar-check text-cream-500"></i> Today Summary
-                    </span>
-                    <span id="period-date-range" class="text-[10px] text-cream-500 font-medium">Today</span>
+            <!-- SECTION 4: AUTO-CAPTURE INBOX -->
+            <section id="pending-inbox-section" class="beige-card border border-amber-200/80 bg-amber-50/40 rounded-3xl p-4 space-y-3">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xs font-bold text-amber-900 flex items-center gap-1.5">
+                        <span>🤖 Auto-Captured Notifications</span>
+                        <span id="pending-badge" class="bg-rose-500 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full hidden">0</span>
+                    </h3>
+                    <button onclick="clearAllPending()" id="clear-all-pending-btn" class="text-[10px] font-bold text-rose-700 hover:underline hidden">
+                        Clear All
+                    </button>
                 </div>
-                <div class="grid grid-cols-3 gap-2 text-center">
-                    <div>
-                        <span class="text-[10px] text-cream-500 font-medium block mb-0.5">Total Spent</span>
-                        <p id="period-out" class="text-sm font-extrabold text-accent-rose">RM 0.00</p>
-                    </div>
-                    <div>
-                        <span class="text-[10px] text-cream-500 font-medium block mb-0.5">Total Income</span>
-                        <p id="period-in" class="text-sm font-extrabold text-accent-emerald">RM 0.00</p>
-                    </div>
-                    <div>
-                        <span class="text-[10px] text-cream-500 font-medium block mb-0.5">Net Savings</span>
-                        <p id="period-left" class="text-sm font-extrabold text-cream-900">RM 0.00</p>
+
+                <div id="pending-cards-container" class="space-y-2">
+                    <!-- Dynamic Pending Cards -->
+                </div>
+            </section>
+
+            <!-- SECTION 5: TRANSACTIONS HISTORY -->
+            <section class="beige-card border border-cream-200 rounded-3xl p-4 space-y-3">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xs font-bold text-cream-900">Recent Activity Log</h3>
+                    <div class="flex gap-1">
+                        <button onclick="filterType('ALL')" id="filter-all-btn" class="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-cream-900 text-cream-50">All</button>
+                        <button onclick="filterType('expense')" id="filter-exp-btn" class="px-2 py-0.5 rounded-lg text-[10px] font-bold text-cream-500 hover:text-cream-900">Spent</button>
+                        <button onclick="filterType('income')" id="filter-inc-btn" class="px-2 py-0.5 rounded-lg text-[10px] font-bold text-cream-500 hover:text-cream-900">Income</button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Recent Auto-Recorded Activity Log -->
-            <div class="space-y-2">
-                <div class="flex justify-between items-center px-1">
-                    <h3 class="text-xs font-bold text-cream-500 uppercase tracking-wider">Transaction Activity (<span id="trx-count">0</span>)</h3>
-                    <button onclick="clearAllTransactions()" class="text-[10px] font-semibold text-cream-400 hover:text-accent-rose transition">Clear All</button>
+                <div id="full-transactions-list" class="space-y-2">
+                    <!-- Dynamic Transaction Items -->
                 </div>
-
-                <div id="transaction-list" class="space-y-2">
-                    <!-- Dynamic Transactions -->
-                </div>
-            </div>
+            </section>
 
         </main>
 
-        <!-- Navigation Bottom Bar -->
-        <footer class="absolute bottom-0 inset-x-0 glass-nav border-t border-cream-200/80 p-3 pb-6 md:pb-4 px-6 flex justify-around items-center z-20">
-            <button onclick="openManualAddModal('debit')" class="flex flex-col items-center gap-1 text-cream-500 hover:text-accent-rose transition">
-                <div class="w-10 h-10 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-center text-accent-rose shadow-sm">
-                    <i class="fa-solid fa-minus"></i>
-                </div>
-                <span class="text-[10px] font-bold">Add Expense</span>
+        <!-- Floating Action Buttons -->
+        <div class="absolute bottom-3 left-4 right-4 h-12 flex gap-2 z-30">
+            <button onclick="openManualModal('income')" class="flex-1 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-2xl shadow-lg border border-emerald-600 flex items-center justify-center gap-1.5 text-xs active:scale-95 transition">
+                <i class="fa-solid fa-plus-circle text-sm"></i> Add Income / Reload
             </button>
-
-            <button onclick="triggerSimulatedNotification()" class="flex flex-col items-center gap-1 text-cream-900 -mt-6">
-                <div class="w-14 h-14 rounded-full bg-cream-900 border-4 border-sand-100 flex items-center justify-center text-cream-50 shadow-xl shadow-cream-900/20 transform active:scale-95 transition">
-                    <i class="fa-solid fa-bell-concierge text-lg"></i>
-                </div>
-                <span class="text-[10px] font-extrabold text-cream-900">Auto Sync</span>
+            <button onclick="openManualModal('expense')" class="flex-1 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-2xl shadow-lg border border-amber-500 flex items-center justify-center gap-1.5 text-xs active:scale-95 transition">
+                <i class="fa-solid fa-minus-circle text-sm"></i> Add Expense
             </button>
-
-            <button onclick="openManualAddModal('credit')" class="flex flex-col items-center gap-1 text-cream-500 hover:text-accent-emerald transition">
-                <div class="w-10 h-10 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-accent-emerald shadow-sm">
-                    <i class="fa-solid fa-plus"></i>
-                </div>
-                <span class="text-[10px] font-bold">Add Income</span>
-            </button>
-        </footer>
-
-
-        <!-- Modal: Intuitive Budget Setting -->
-        <div id="budget-modal" class="hidden fixed inset-0 bg-cream-900/50 backdrop-blur-sm z-50 flex items-end md:items-center justify-center p-0 md:p-4">
-            <div class="bg-cream-50 border border-cream-200 w-full max-w-md rounded-t-3xl md:rounded-3xl p-6 space-y-4 shadow-2xl">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-base font-extrabold text-cream-900"><i class="fa-solid fa-sliders text-cream-500 mr-2"></i>Configure Your Budget</h3>
-                    <button onclick="closeBudgetModal()" class="text-cream-400 hover:text-cream-900"><i class="fa-solid fa-xmark text-lg"></i></button>
-                </div>
-
-                <!-- Budget Type Selection Tabs -->
-                <div class="bg-sand-100 p-1 rounded-xl border border-cream-200 flex text-xs font-bold gap-1">
-                    <button id="mode-btn-daily" onclick="setBudgetModeSelection('daily')" class="flex-1 py-2 rounded-lg text-center bg-cream-900 text-cream-50 transition">Fixed Daily (Easy)</button>
-                    <button id="mode-btn-monthly" onclick="setBudgetModeSelection('monthly')" class="flex-1 py-2 rounded-lg text-center text-cream-500 transition">Monthly Target</button>
-                </div>
-
-                <!-- Mode Explanation -->
-                <div id="budget-mode-desc" class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 font-medium">
-                    Set a simple target limit for each day (e.g. RM 50/day). Unspent amounts reset cleanly each day.
-                </div>
-
-                <div class="space-y-3">
-                    <div id="daily-input-group">
-                        <label class="text-xs font-bold text-cream-800 block mb-1">Target Daily Allowance (RM)</label>
-                        <input type="number" id="input-daily-budget" class="w-full bg-sand-100 border border-cream-200 rounded-xl px-4 py-2.5 text-cream-900 text-base font-bold focus:outline-none focus:border-cream-800" placeholder="e.g. 50">
-                    </div>
-
-                    <div id="monthly-input-group" class="hidden">
-                        <label class="text-xs font-bold text-cream-800 block mb-1">Total Monthly Budget (RM)</label>
-                        <input type="number" id="input-monthly-budget" class="w-full bg-sand-100 border border-cream-200 rounded-xl px-4 py-2.5 text-cream-900 text-base font-bold focus:outline-none focus:border-cream-800" placeholder="e.g. 1500">
-                        <p class="text-[10px] text-cream-500 mt-1">SmartExpense will divide your monthly budget by remaining days in the month automatically.</p>
-                    </div>
-                </div>
-
-                <div class="flex gap-3 pt-2">
-                    <button onclick="closeBudgetModal()" class="flex-1 py-2.5 rounded-xl border border-cream-200 text-cream-800 text-xs font-bold hover:bg-cream-100">Cancel</button>
-                    <button onclick="saveBudget()" class="flex-1 py-2.5 rounded-xl bg-cream-900 hover:bg-cream-800 text-cream-50 text-xs font-bold shadow-md">Save Budget</button>
-                </div>
-            </div>
         </div>
 
-        <!-- Simulated Notification Toast -->
-        <div id="simulated-notification-toast" class="hidden absolute top-4 left-4 right-4 bg-cream-900 text-cream-50 rounded-2xl p-4 shadow-2xl z-50 transform transition-all duration-300 translate-y-[-120%]">
-            <div class="flex items-start justify-between">
-                <div class="flex items-center gap-3">
-                    <div id="toast-icon-bg" class="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center text-white text-[10px] font-bold shrink-0">
-                        TnG
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <span id="toast-app-name" class="text-xs font-extrabold text-white">Touch 'n Go eWallet</span>
-                            <span class="text-[9px] bg-cream-800 text-cream-300 px-1.5 py-0.5 rounded">Just Now</span>
-                        </div>
-                        <p id="toast-message" class="text-xs text-cream-200 mt-0.5">RM 15.50 paid to Starbucks Cafe</p>
-                    </div>
-                </div>
-                <button onclick="dismissToast()" class="text-cream-400 hover:text-white text-xs p-1">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- Modal: Account Balances -->
-        <div id="accounts-modal" class="hidden fixed inset-0 bg-cream-900/60 backdrop-blur-sm z-50 flex items-end md:items-center justify-center p-0 md:p-4">
-            <div class="bg-cream-50 border border-cream-200 w-full max-w-md rounded-t-3xl md:rounded-3xl p-6 space-y-4 shadow-2xl max-h-[85vh] flex flex-col">
-                <div class="flex justify-between items-center shrink-0">
-                    <h3 class="text-base font-extrabold text-cream-900"><i class="fa-solid fa-building-columns text-cream-500 mr-2"></i>Account Starting Balances</h3>
-                    <button onclick="closeAccountsModal()" class="text-cream-400 hover:text-cream-900"><i class="fa-solid fa-xmark text-lg"></i></button>
-                </div>
-                
-                <p class="text-xs text-cream-500 shrink-0">Set your starting account balances below. Expenses and deposits update these automatically.</p>
-
-                <div id="accounts-input-list" class="space-y-3 overflow-y-auto hide-scrollbar pr-1 flex-1 py-1">
-                    <!-- Account Input List -->
-                </div>
-
-                <div class="flex gap-3 pt-2 shrink-0">
-                    <button onclick="closeAccountsModal()" class="flex-1 py-2.5 rounded-xl border border-cream-200 text-cream-800 text-xs font-bold hover:bg-cream-100">Cancel</button>
-                    <button onclick="saveAccountBalances()" class="flex-1 py-2.5 rounded-xl bg-cream-900 hover:bg-cream-800 text-cream-50 text-xs font-bold shadow-md">Save Balances</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal: Manual Add Expense/Income -->
-        <div id="manual-modal" class="hidden fixed inset-0 bg-cream-900/50 backdrop-blur-sm z-50 flex items-end md:items-center justify-center p-0 md:p-4">
-            <div class="bg-cream-50 border border-cream-200 w-full max-w-md rounded-t-3xl md:rounded-3xl p-6 space-y-4 shadow-2xl">
-                <div class="flex justify-between items-center">
-                    <h3 id="manual-title" class="text-base font-extrabold text-cream-900">Manual Record</h3>
-                    <button onclick="closeManualModal()" class="text-cream-400 hover:text-cream-900"><i class="fa-solid fa-xmark text-lg"></i></button>
-                </div>
-
-                <div class="space-y-3">
-                    <div>
-                        <label class="text-xs font-bold text-cream-800 block mb-1">Amount (RM)</label>
-                        <input type="number" id="manual-amount" step="0.01" class="w-full bg-sand-100 border border-cream-200 rounded-xl px-4 py-2.5 text-cream-900 text-lg font-extrabold focus:outline-none focus:border-cream-800" placeholder="0.00">
-                    </div>
-                    <div>
-                        <label class="text-xs font-bold text-cream-800 block mb-1">Description / Merchant</label>
-                        <input type="text" id="manual-title-input" class="w-full bg-sand-100 border border-cream-200 rounded-xl px-4 py-2 text-cream-900 text-xs font-medium focus:outline-none focus:border-cream-800" placeholder="e.g. Lunch, Groceries, Salary">
-                    </div>
-                    <div>
-                        <label class="text-xs font-bold text-cream-800 block mb-1">Category</label>
-                        <select id="manual-category" class="w-full bg-sand-100 border border-cream-200 rounded-xl px-4 py-2 text-cream-900 text-xs font-medium focus:outline-none focus:border-cream-800">
-                            <option value="Food">Food & Drinks</option>
-                            <option value="Transport">Transport / Petrol</option>
-                            <option value="Groceries">Groceries</option>
-                            <option value="Bills">Bills & Utilities</option>
-                            <option value="Shopping">Shopping</option>
-                            <option value="General">General / Income</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-xs font-bold text-cream-800 block mb-1">Bank / Wallet Account</label>
-                        <select id="manual-source" class="w-full bg-sand-100 border border-cream-200 rounded-xl px-4 py-2 text-cream-900 text-xs font-medium focus:outline-none focus:border-cream-800">
-                            <!-- Populated dynamically via JS -->
-                        </select>
-                    </div>
-                </div>
-
-                <div class="flex gap-3 pt-2">
-                    <button onclick="closeManualModal()" class="flex-1 py-2.5 rounded-xl border border-cream-200 text-cream-800 text-xs font-bold hover:bg-cream-100">Cancel</button>
-                    <button onclick="saveManualTransaction()" class="flex-1 py-2.5 rounded-xl bg-cream-900 hover:bg-cream-800 text-cream-50 text-xs font-bold shadow-md">Confirm Record</button>
-                </div>
-            </div>
+        <!-- Toast Banner -->
+        <div id="toast-banner" class="hidden absolute top-16 left-4 right-4 bg-cream-900 text-cream-50 px-3.5 py-2 rounded-xl text-xs font-semibold shadow-xl border border-cream-800 z-50 transition-all flex items-center justify-between">
+            <span id="toast-message" class="flex items-center gap-1.5">✨ Done</span>
+            <button onclick="hideToast()" class="text-cream-400 hover:text-white text-base">&times;</button>
         </div>
 
     </div>
 
-    <script>
-        // List of Malaysian Banks & eWallets
-        const BANK_LIST = [
-            { id: 'tng', name: "Touch 'n Go eWallet", category: "eWallet" },
-            { id: 'maybank', name: "Maybank (MAE / M2U)", category: "Bank" },
-            { id: 'cimb', name: "CIMB Bank", category: "Bank" },
-            { id: 'public', name: "Public Bank", category: "Bank" },
-            { id: 'hongleong', name: "Hong Leong Bank", category: "Bank" },
-            { id: 'rhb', name: "RHB Bank", category: "Bank" },
-            { id: 'cash', name: "Cash / Wallet", category: "Cash" }
-        ];
+    <!-- MODAL 1: ADD NEW ACCOUNT MODAL -->
+    <div id="modal-add-account" class="hidden fixed inset-0 bg-cream-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="beige-card border border-cream-200 rounded-3xl max-w-xs w-full p-5 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center">
+                <h3 class="text-xs font-bold text-cream-900">Add Bank or E-Wallet 🏦</h3>
+                <button onclick="closeAddAccountModal()" class="text-cream-400 hover:text-cream-900 text-lg">&times;</button>
+            </div>
 
-        // Application State
-        let appState = {
-            budgetMode: 'daily', // 'daily' or 'monthly'
-            fixedDailyBudget: 50.00,
-            monthlyBudget: 1500.00,
-            activeTab: 'daily',
-            pendingType: 'debit',
-            selectedModalMode: 'daily',
-            initialBalances: {
-                "Touch 'n Go eWallet": 150.00,
-                "Maybank (MAE / M2U)": 1250.00,
-                "Cash / Wallet": 100.00
-            },
+            <form onsubmit="handleAddAccountSubmit(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block text-cream-500 font-bold mb-1">Select Bank / Provider</label>
+                    <select id="new-account-preset" onchange="handlePresetBankChange()" class="w-full bg-sand-100 border border-cream-200 rounded-xl p-2.5 font-bold text-cream-900">
+                        <optgroup label="E-Wallets & Digital Banks">
+                            <option value="Touch 'n Go eWallet">Touch 'n Go eWallet</option>
+                            <option value="GXBank">GXBank</option>
+                            <option value="Boost eWallet / Bank">Boost Bank / eWallet</option>
+                            <option value="GrabPay">GrabPay</option>
+                            <option value="ShopeePay">ShopeePay</option>
+                        </optgroup>
+                        <optgroup label="Malaysian Banks">
+                            <option value="Maybank">Maybank (MBB / MAE)</option>
+                            <option value="CIMB Bank">CIMB Bank</option>
+                            <option value="Public Bank">Public Bank</option>
+                            <option value="RHB Bank">RHB Bank</option>
+                            <option value="Hong Leong Bank">Hong Leong Bank</option>
+                        </optgroup>
+                        <optgroup label="Other">
+                            <option value="Physical Cash">Physical Cash</option>
+                            <option value="CUSTOM">Custom Account Name...</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div id="custom-bank-name-container" class="hidden">
+                    <label class="block text-cream-500 font-bold mb-1">Custom Account Name</label>
+                    <input type="text" id="custom-account-name" placeholder="e.g. Wise, Revolut" class="w-full bg-sand-100 border border-cream-200 rounded-xl p-2.5 font-bold text-cream-900">
+                </div>
+
+                <div>
+                    <label class="block text-cream-500 font-bold mb-1">Initial Balance (RM)</label>
+                    <input type="number" step="0.01" id="new-account-amount" required placeholder="0.00" class="w-full bg-sand-100 border border-cream-200 rounded-xl p-2.5 font-extrabold text-base text-cream-900">
+                </div>
+
+                <div class="pt-2 flex gap-2">
+                    <button type="button" onclick="closeAddAccountModal()" class="flex-1 py-2 bg-cream-200 rounded-xl font-bold text-cream-800">Cancel</button>
+                    <button type="submit" class="flex-1 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-bold">Add Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: EDIT ACCOUNT BALANCE MODAL -->
+    <div id="modal-edit-account" class="hidden fixed inset-0 bg-cream-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="beige-card border border-cream-200 rounded-3xl max-w-xs w-full p-5 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center">
+                <h3 id="edit-account-title" class="text-xs font-bold text-cream-900">Set Account Balance</h3>
+                <button onclick="closeEditAccountModal()" class="text-cream-400 hover:text-cream-900 text-lg">&times;</button>
+            </div>
+
+            <form onsubmit="handleEditAccountSubmit(event)" class="space-y-3 text-xs">
+                <input type="hidden" id="edit-account-key">
+                <div>
+                    <label class="block text-cream-500 font-bold mb-1">Current Amount (RM)</label>
+                    <input type="number" step="0.01" id="edit-account-amount" required placeholder="0.00" class="w-full bg-sand-100 border border-cream-200 rounded-xl p-2.5 font-extrabold text-base text-cream-900">
+                </div>
+
+                <div class="pt-2 flex gap-2">
+                    <button type="button" onclick="deleteAccountCurrent()" class="px-3 py-2 bg-rose-100 text-rose-800 rounded-xl font-bold hover:bg-rose-200" title="Delete Account">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                    <button type="button" onclick="closeEditAccountModal()" class="flex-1 py-2 bg-cream-200 rounded-xl font-bold text-cream-800">Cancel</button>
+                    <button type="submit" class="flex-1 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-bold">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 3: MANUAL TRANSACTION MODAL -->
+    <div id="modal-manual" class="hidden fixed inset-0 bg-cream-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="beige-card border border-cream-200 rounded-3xl max-w-xs w-full p-5 space-y-4 shadow-2xl relative">
+            <div class="flex justify-between items-center">
+                <h3 id="manual-modal-title" class="text-xs font-bold text-cream-900">Add Record 📝</h3>
+                <button onclick="closeManualModal()" class="text-cream-400 hover:text-cream-900 text-lg">&times;</button>
+            </div>
+
+            <form id="manual-form" onsubmit="handleManualSubmit(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block text-cream-500 font-bold mb-1">Type</label>
+                    <select id="m-type" onchange="toggleCategorySelect()" class="w-full bg-sand-100 border border-cream-200 rounded-xl p-2 font-bold text-cream-900">
+                        <option value="expense">Expense (-)</option>
+                        <option value="income">Income / Reload (+)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-cream-500 font-bold mb-1">Amount (RM)</label>
+                    <input type="number" step="0.01" id="m-amount" required placeholder="0.00" class="w-full bg-sand-100 border border-cream-200 rounded-xl p-2 font-extrabold text-base text-cream-900">
+                </div>
+
+                <div>
+                    <label class="block text-cream-500 font-bold mb-1">Source / Merchant Name</label>
+                    <input type="text" id="m-merchant" required placeholder="e.g. Salary, Nasi Lemak Stall" class="w-full bg-sand-100 border border-cream-200 rounded-xl p-2 text-cream-900">
+                </div>
+
+                <div id="m-category-container">
+                    <label class="block text-cream-500 font-bold mb-1">Category Group</label>
+                    <select id="m-category" class="w-full bg-sand-100 border border-cream-200 rounded-xl p-2 text-cream-900">
+                        <option value="Food & Dining">Food & Dining 🍲</option>
+                        <option value="Groceries">Groceries 🛒</option>
+                        <option value="Transportation">Transportation 🚗</option>
+                        <option value="Shopping">Shopping 🛍️</option>
+                        <option value="Bills & Utilities">Bills & Utilities ⚡</option>
+                        <option value="General">General 📦</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-cream-500 font-bold mb-1">Account / Wallet</label>
+                    <select id="m-account" class="w-full bg-sand-100 border border-cream-200 rounded-xl p-2 text-cream-900">
+                        <!-- Populated Dynamically -->
+                    </select>
+                </div>
+
+                <div class="pt-2 flex gap-2">
+                    <button type="button" onclick="closeManualModal()" class="flex-1 py-2 bg-cream-200 rounded-xl font-bold text-cream-800">Cancel</button>
+                    <button type="submit" class="flex-1 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-bold">Save Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 4: BUDGET SETTINGS MODAL -->
+    <div id="modal-budget" class="hidden fixed inset-0 bg-cream-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="beige-card border border-cream-200 rounded-3xl max-w-xs w-full p-5 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center">
+                <h3 class="text-xs font-bold text-cream-900">Monthly Target Budget ⚙️</h3>
+                <button onclick="closeBudgetModal()" class="text-cream-400 hover:text-cream-900 text-lg">&times;</button>
+            </div>
+
+            <form onsubmit="handleBudgetSubmit(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block text-cream-500 font-bold mb-1">Monthly Spending Target (RM)</label>
+                    <input type="number" step="10" id="b-limit" required class="w-full bg-sand-100 border border-cream-200 rounded-xl p-2.5 font-bold text-cream-900">
+                </div>
+
+                <div class="pt-2 flex gap-2">
+                    <button type="button" onclick="closeBudgetModal()" class="flex-1 py-2 bg-cream-200 rounded-xl font-bold text-cream-800">Cancel</button>
+                    <button type="submit" class="flex-1 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-bold">Save Target</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // --- Service Worker Registration for Native Android PWA Eligibility ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                const swCode = `
+                    self.addEventListener('install', (e) => self.skipWaiting());
+                    self.addEventListener('activate', (e) => e.waitUntil(self.clients.claim()));
+                    self.addEventListener('fetch', (e) => {
+                        e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+                    });
+                `;
+                const blob = new Blob([swCode], { type: 'text/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                
+                navigator.serviceWorker.register(swUrl).then(() => {
+                    console.log('PWA Service Worker registered successfully.');
+                }).catch(err => {
+                    console.warn('SW Registration:', err);
+                });
+            });
+        }
+
+        // --- Core App State & Storage ---
+        const DEFAULT_ACCOUNTS = {
+            "Touch 'n Go eWallet": 250.00,
+            "GXBank": 1200.00,
+            "Maybank": 3450.50
+        };
+
+        const BANK_ICONS = {
+            "Touch 'n Go eWallet": "🟦",
+            "GXBank": "🔴",
+            "Maybank": "🟡",
+            "CIMB Bank": "🔴",
+            "Public Bank": "🔴",
+            "RHB Bank": "🔵",
+            "Hong Leong Bank": "🔴",
+            "Boost eWallet / Bank": "🔴",
+            "GrabPay": "🟢",
+            "ShopeePay": "🟠",
+            "Physical Cash": "💵",
+            "CUSTOM": "💳"
+        };
+
+        let appData = {
+            monthlyBudget: 1500,
+            accounts: { ...DEFAULT_ACCOUNTS },
             transactions: [
-                {
-                    id: 1,
-                    source: "Touch 'n Go eWallet",
-                    type: "debit",
-                    category: "Food",
-                    title: "Starbucks Coffee",
-                    amount: 18.50,
-                    date: new Date().toISOString().split('T')[0],
-                    timestamp: new Date(Date.now() - 3600000 * 2).toISOString()
-                },
-                {
-                    id: 2,
-                    source: "Maybank (MAE / M2U)",
-                    type: "debit",
-                    category: "Food",
-                    title: "Chicken Rice Lunch",
-                    amount: 12.00,
-                    date: new Date().toISOString().split('T')[0],
-                    timestamp: new Date(Date.now() - 3600000 * 5).toISOString()
-                }
+                { id: '1', date: '2026-10-15T12:30:00', type: 'expense', amount: 12.50, merchant: 'Nasi Kandar Pelita', category: 'Food & Dining', account: "Touch 'n Go eWallet" },
+                { id: '2', date: '2026-10-15T09:15:00', type: 'expense', amount: 50.00, merchant: 'Shell Petrol Station', category: 'Transportation', account: "Maybank" },
+                { id: '3', date: '2026-10-14T18:00:00', type: 'expense', amount: 88.20, merchant: 'Jaya Grocer Supermarket', category: 'Groceries', account: "GXBank" }
+            ],
+            pendingInbox: [
+                { id: 'p1', date: '2026-10-16T10:05:00', type: 'expense', amount: 15.00, merchant: 'ZUS Coffee', category: 'Food & Dining', account: "Touch 'n Go eWallet" }
             ]
         };
 
-        window.onload = function() {
-            loadFromLocalStorage();
-            populateBankDropdown();
-            renderDashboard();
-        };
+        let currentFilter = 'ALL';
+        let deferredPrompt = null;
 
-        function populateBankDropdown() {
-            const selectEl = document.getElementById('manual-source');
-            selectEl.innerHTML = BANK_LIST.map(b => `<option value="${b.name}">${b.name}</option>`).join('');
-        }
+        // --- PWA Installation Event Logic ---
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const banner = document.getElementById('pwa-install-banner');
+            if (banner) banner.classList.remove('hidden');
+        });
 
-        function calculateAccountBalances() {
-            const currentBalances = { ...appState.initialBalances };
-            appState.transactions.forEach(t => {
-                if (!currentBalances.hasOwnProperty(t.source)) {
-                    currentBalances[t.source] = 0;
-                }
-                if (t.type === 'credit') {
-                    currentBalances[t.source] += t.amount;
-                } else if (t.type === 'debit') {
-                    currentBalances[t.source] -= t.amount;
-                }
-            });
-            return currentBalances;
-        }
-
-        function renderDashboard() {
-            const todayStr = new Date().toISOString().split('T')[0];
-            const now = new Date();
-            const currentMonth = now.getMonth();
-            const currentYear = now.getFullYear();
-
-            // Calculate Daily Target Budget
-            let targetDailyLimit = 0;
-            if (appState.budgetMode === 'daily') {
-                targetDailyLimit = appState.fixedDailyBudget;
-                document.getElementById('budget-mode-badge').innerHTML = `<i class="fa-solid fa-bullseye"></i> RM ${appState.fixedDailyBudget.toFixed(0)} Daily Target`;
-            } else {
-                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-                const daysRemaining = daysInMonth - now.getDate() + 1;
-                
-                const monthlyTrx = appState.transactions.filter(t => {
-                    const d = new Date(t.timestamp);
-                    return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+        function triggerPwaInstall() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        showToast("✅ Installing App on your Android Phone!");
+                        const banner = document.getElementById('pwa-install-banner');
+                        if (banner) banner.classList.add('hidden');
+                    }
+                    deferredPrompt = null;
                 });
-                const monthlyDebit = monthlyTrx.filter(t => t.type === 'debit').reduce((sum, t) => sum + t.amount, 0);
-                const monthlyCredit = monthlyTrx.filter(t => t.type === 'credit').reduce((sum, t) => sum + t.amount, 0);
-                
-                const remainingMonthly = Math.max(0, (appState.monthlyBudget + monthlyCredit) - monthlyDebit);
-                targetDailyLimit = daysRemaining > 0 ? (remainingMonthly / daysRemaining) : 0;
-                document.getElementById('budget-mode-badge').innerHTML = `<i class="fa-solid fa-calendar-days"></i> Monthly Dynamic`;
+            } else {
+                showToast("💡 Chrome Menu -> 'Add to Home screen' or 'Install App'");
             }
+        }
 
-            // Calculate Today's Spending
-            const todayTrx = appState.transactions.filter(t => t.date === todayStr);
-            const todayDebit = todayTrx.filter(t => t.type === 'debit').reduce((sum, t) => sum + t.amount, 0);
-            const todayCredit = todayTrx.filter(t => t.type === 'credit').reduce((sum, t) => sum + t.amount, 0);
+        window.addEventListener('appinstalled', () => {
+            showToast("🎉 SmartExpense successfully installed!");
+            const banner = document.getElementById('pwa-install-banner');
+            if (banner) banner.classList.add('hidden');
+        });
 
-            const safeSpendLeft = targetDailyLimit - todayDebit;
+        // --- Initialization & UI Renderers ---
+        function initApp() {
+            loadFromStorage();
+            renderAll();
+        }
 
-            document.getElementById('daily-remaining').innerText = Math.max(0, safeSpendLeft).toFixed(2);
-            document.getElementById('today-spent-text').innerText = `RM ${todayDebit.toFixed(2)}`;
-            document.getElementById('daily-limit-text').innerText = `Target: RM ${targetDailyLimit.toFixed(2)}`;
+        function loadFromStorage() {
+            const saved = localStorage.getItem('smartexpense_data_v2');
+            if (saved) {
+                try {
+                    appData = JSON.parse(saved);
+                } catch(e) {
+                    console.error("Failed loading local state", e);
+                }
+            }
+        }
 
-            // Update Progress Bar & Friendly Advice
-            const progressPct = targetDailyLimit > 0 ? Math.min(100, (todayDebit / targetDailyLimit) * 100) : 100;
+        function saveToStorage() {
+            localStorage.setItem('smartexpense_data_v2', JSON.stringify(appData));
+        }
+
+        function renderAll() {
+            renderAccounts();
+            renderTransactions();
+            renderPendingInbox();
+            renderBudgetAndHeader();
+            renderCategoryBreakdown();
+        }
+
+        // --- Render Accounts ---
+        function renderAccounts() {
+            const container = document.getElementById('accounts-grid-container');
+            const selectEl = document.getElementById('m-account');
+            container.innerHTML = '';
+            selectEl.innerHTML = '';
+
+            Object.entries(appData.accounts).forEach(([name, balance]) => {
+                const icon = BANK_ICONS[name] || "💳";
+                const card = document.createElement('div');
+                card.className = "beige-card border border-cream-200/80 rounded-2xl p-3 flex flex-col justify-between cursor-pointer hover:border-amber-400 transition";
+                card.onclick = () => openEditAccountModal(name, balance);
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <span class="text-lg">${icon}</span>
+                        <span class="text-[9px] font-bold text-cream-500 bg-sand-100 px-1.5 py-0.5 rounded-md">Edit</span>
+                    </div>
+                    <div class="mt-2">
+                        <h4 class="text-[11px] font-bold text-cream-800 truncate">${name}</h4>
+                        <p class="text-sm font-extrabold text-cream-900">RM ${balance.toFixed(2)}</p>
+                    </div>
+                `;
+                container.appendChild(card);
+
+                const opt = document.createElement('option');
+                opt.value = name;
+                opt.textContent = `${icon} ${name}`;
+                selectEl.appendChild(opt);
+            });
+        }
+
+        // --- Render Budget & Safe Daily Spend ---
+        function renderBudgetAndHeader() {
+            const totalBalance = Object.values(appData.accounts).reduce((acc, curr) => acc + curr, 0);
+            document.getElementById('total-net-balance').textContent = totalBalance.toFixed(2);
+
+            const targetMonthly = appData.monthlyBudget || 1500;
+            document.getElementById('target-monthly-val').textContent = targetMonthly;
+
+            const now = new Date();
+            const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+            const currentDay = now.getDate();
+            const daysRemaining = Math.max(1, daysInMonth - currentDay + 1);
+
+            const spentToday = appData.transactions
+                .filter(t => {
+                    const d = new Date(t.date);
+                    return t.type === 'expense' && 
+                           d.getDate() === now.getDate() && 
+                           d.getMonth() === now.getMonth() && 
+                           d.getFullYear() === now.getFullYear();
+                })
+                .reduce((acc, curr) => acc + curr.amount, 0);
+
+            document.getElementById('spent-today-val').textContent = spentToday.toFixed(2);
+
+            const spentThisMonth = appData.transactions
+                .filter(t => {
+                    const d = new Date(t.date);
+                    return t.type === 'expense' && 
+                           d.getMonth() === now.getMonth() && 
+                           d.getFullYear() === now.getFullYear();
+                })
+                .reduce((acc, curr) => acc + curr.amount, 0);
+
+            const remainingBudgetMonth = Math.max(0, targetMonthly - spentThisMonth);
+            const dailyLimitSafe = remainingBudgetMonth / daysRemaining;
+
+            document.getElementById('daily-remaining-val').textContent = `RM ${dailyLimitSafe.toFixed(2)}/day`;
+
+            const percentSpent = Math.min(100, Math.round((spentThisMonth / targetMonthly) * 100));
             const progressBar = document.getElementById('daily-progress-bar');
-            progressBar.style.width = `${progressPct}%`;
+            progressBar.style.width = `${percentSpent}%`;
 
-            const adviceBox = document.getElementById('smart-advice-text');
-            const adviceIconBg = document.getElementById('advice-icon-bg');
-            const adviceIcon = document.getElementById('advice-icon');
-
-            if (todayDebit > targetDailyLimit) {
-                progressBar.className = "bg-accent-rose h-2 rounded-full transition-all duration-500";
-                adviceIconBg.className = "w-7 h-7 rounded-xl bg-rose-100 border border-rose-200 flex items-center justify-center text-accent-rose shrink-0 text-xs";
-                adviceIcon.className = "fa-solid fa-triangle-exclamation";
-                adviceBox.innerHTML = `Over target by <strong class="text-accent-rose">RM ${(todayDebit - targetDailyLimit).toFixed(2)}</strong> today. Try to keep tomorrow light!`;
-            } else if (progressPct > 75) {
-                progressBar.className = "bg-amber-500 h-2 rounded-full transition-all duration-500";
-                adviceIconBg.className = "w-7 h-7 rounded-xl bg-amber-100 border border-amber-200 flex items-center justify-center text-amber-800 shrink-0 text-xs";
-                adviceIcon.className = "fa-solid fa-hand text-amber-800";
-                adviceBox.innerHTML = `Approaching target! You have <strong class="text-amber-800">RM ${safeSpendLeft.toFixed(2)}</strong> left for today.`;
+            if (percentSpent > 90) {
+                progressBar.className = "bg-rose-600 h-full rounded-full transition-all duration-300";
+            } else if (percentSpent > 70) {
+                progressBar.className = "bg-amber-500 h-full rounded-full transition-all duration-300";
             } else {
-                progressBar.className = "bg-accent-emerald h-2 rounded-full transition-all duration-500";
-                adviceIconBg.className = "w-7 h-7 rounded-xl bg-emerald-100 border border-emerald-200 flex items-center justify-center text-accent-emerald shrink-0 text-xs";
-                adviceIcon.className = "fa-solid fa-face-smile text-accent-emerald";
-                adviceBox.innerHTML = `On track! You can safely spend <strong class="text-accent-emerald">RM ${safeSpendLeft.toFixed(2)}</strong> more today.`;
+                progressBar.className = "bg-emerald-600 h-full rounded-full transition-all duration-300";
             }
 
-            document.getElementById('today-debit').innerText = `RM ${todayDebit.toFixed(2)}`;
-            document.getElementById('debit-count').innerText = `${todayTrx.filter(t => t.type === 'debit').length} spent`;
-            document.getElementById('today-credit').innerText = `RM ${todayCredit.toFixed(2)}`;
-            document.getElementById('credit-count').innerText = `${todayTrx.filter(t => t.type === 'credit').length} added`;
-
-            renderAccountCards();
-            renderPeriodSummary();
-            renderTransactionList();
-        }
-
-        function quickAddExpense(amount, title, source, category) {
-            const todayStr = new Date().toISOString().split('T')[0];
-            appState.transactions.push({
-                id: Date.now(),
-                source: source,
-                type: 'debit',
-                category: category,
-                title: title,
-                amount: amount,
-                date: todayStr,
-                timestamp: new Date().toISOString()
-            });
-
-            saveToLocalStorage();
-            renderDashboard();
-        }
-
-        function renderAccountCards() {
-            const container = document.getElementById('accounts-cards-container');
-            const currentBalances = calculateAccountBalances();
-
-            const activeAccounts = Object.keys(currentBalances).filter(acc => {
-                return (appState.initialBalances[acc] !== undefined && appState.initialBalances[acc] !== 0) || currentBalances[acc] !== 0;
-            });
-
-            if (activeAccounts.length === 0) {
-                container.innerHTML = `
-                    <div class="col-span-2 beige-card border border-cream-200 rounded-2xl p-3 text-center text-cream-500 text-xs">
-                        No balances configured. <button onclick="openAccountsModal()" class="text-amber-800 font-bold underline">Set Balances</button>
-                    </div>
-                `;
-                return;
+            const tipText = document.getElementById('mascot-tip-text');
+            if (spentToday > dailyLimitSafe) {
+                tipText.textContent = "🧸 Slow down today! You've crossed today's safe daily target.";
+            } else {
+                tipText.textContent = `🧸 On track! RM ${dailyLimitSafe.toFixed(2)} is your daily safe budget for remaining ${daysRemaining} days.`;
             }
-
-            container.innerHTML = activeAccounts.map(accName => {
-                const bal = currentBalances[accName] || 0;
-                return `
-                    <div class="beige-card border border-cream-200 rounded-2xl p-3 flex flex-col justify-between">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-cream-200 text-cream-800 truncate max-w-[110px]">${accName}</span>
-                            <i class="fa-solid fa-wallet text-[10px] text-cream-400"></i>
-                        </div>
-                        <div>
-                            <span class="text-[9px] text-cream-500 block">Balance</span>
-                            <p class="text-xs font-extrabold ${bal < 0 ? 'text-accent-rose' : 'text-cream-900'} truncate">
-                                RM ${bal.toFixed(2)}
-                            </p>
-                        </div>
-                    </div>
-                `;
-            }).join('');
         }
 
-        function switchPeriod(period) {
-            appState.activeTab = period;
-            ['daily', 'weekly', 'monthly'].forEach(p => {
-                const btn = document.getElementById(`tab-${p}`);
-                btn.className = (p === period) 
-                    ? "flex-1 py-2 rounded-xl text-center transition bg-cream-900 text-cream-50 shadow-sm font-bold"
-                    : "flex-1 py-2 rounded-xl text-center transition text-cream-500 hover:text-cream-900";
-            });
-            renderPeriodSummary();
-        }
+        // --- Render Spending Breakdown Groups ---
+        function renderCategoryBreakdown() {
+            const container = document.getElementById('category-groups-list');
+            container.innerHTML = '';
 
-        function renderPeriodSummary() {
-            const titleEl = document.getElementById('period-title');
-            const rangeEl = document.getElementById('period-date-range');
-            const outEl = document.getElementById('period-out');
-            const inEl = document.getElementById('period-in');
-            const leftEl = document.getElementById('period-left');
+            const categoryTotals = {
+                'Food & Dining': 0,
+                'Groceries': 0,
+                'Transportation': 0,
+                'Shopping': 0,
+                'Bills & Utilities': 0,
+                'General': 0
+            };
 
             const now = new Date();
-            let filteredTrx = [];
+            let totalSpentMonth = 0;
 
-            if (appState.activeTab === 'daily') {
-                const todayStr = now.toISOString().split('T')[0];
-                titleEl.innerHTML = `<i class="fa-regular fa-calendar-check text-cream-500"></i> Today Summary`;
-                rangeEl.innerText = "Today";
-                filteredTrx = appState.transactions.filter(t => t.date === todayStr);
-            } else if (appState.activeTab === 'weekly') {
-                titleEl.innerHTML = `<i class="fa-solid fa-calendar-week text-cream-500"></i> Weekly Summary`;
-                rangeEl.innerText = "Last 7 Days";
-                const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-                filteredTrx = appState.transactions.filter(t => new Date(t.timestamp) >= sevenDaysAgo);
-            } else {
-                titleEl.innerHTML = `<i class="fa-solid fa-chart-pie text-cream-500"></i> Monthly Summary`;
-                rangeEl.innerText = "This Month";
-                filteredTrx = appState.transactions.filter(t => {
-                    const d = new Date(t.timestamp);
-                    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-                });
-            }
+            appData.transactions.forEach(t => {
+                const d = new Date(t.date);
+                if (t.type === 'expense' && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()) {
+                    const cat = t.category || 'General';
+                    categoryTotals[cat] = (categoryTotals[cat] || 0) + t.amount;
+                    totalSpentMonth += t.amount;
+                }
+            });
 
-            const totalOut = filteredTrx.filter(t => t.type === 'debit').reduce((sum, t) => sum + t.amount, 0);
-            const totalIn = filteredTrx.filter(t => t.type === 'credit').reduce((sum, t) => sum + t.amount, 0);
-            const net = totalIn - totalOut;
+            Object.entries(categoryTotals).forEach(([catName, amount]) => {
+                if (amount === 0 && totalSpentMonth > 0) return;
 
-            outEl.innerText = `RM ${totalOut.toFixed(2)}`;
-            inEl.innerText = `RM ${totalIn.toFixed(2)}`;
-            leftEl.innerText = `${net >= 0 ? '+' : ''}RM ${net.toFixed(2)}`;
-            leftEl.className = `text-sm font-extrabold ${net >= 0 ? 'text-accent-emerald' : 'text-accent-rose'}`;
-        }
-
-        function renderTransactionList() {
-            const listEl = document.getElementById('transaction-list');
-            document.getElementById('trx-count').innerText = appState.transactions.length;
-
-            if (appState.transactions.length === 0) {
-                listEl.innerHTML = `
-                    <div class="beige-card border border-cream-200 rounded-2xl p-6 text-center text-cream-400">
-                        <i class="fa-solid fa-receipt text-2xl mb-1 text-cream-300"></i>
-                        <p class="text-xs font-medium">No recorded transactions yet.</p>
+                const percent = totalSpentMonth > 0 ? Math.round((amount / totalSpentMonth) * 100) : 0;
+                const row = document.createElement('div');
+                row.className = "space-y-1";
+                row.innerHTML = `
+                    <div class="flex justify-between items-center text-[11px] font-bold text-cream-800">
+                        <span>${catName}</span>
+                        <span>RM ${amount.toFixed(2)} (${percent}%)</span>
+                    </div>
+                    <div class="w-full bg-cream-200/60 rounded-full h-1.5 overflow-hidden">
+                        <div class="bg-amber-700 h-full rounded-full" style="width: ${percent}%"></div>
                     </div>
                 `;
+                container.appendChild(row);
+            });
+        }
+
+        // --- Render Pending Notification Inbox ---
+        function renderPendingInbox() {
+            const container = document.getElementById('pending-cards-container');
+            const badge = document.getElementById('pending-badge');
+            const clearBtn = document.getElementById('clear-all-pending-btn');
+            container.innerHTML = '';
+
+            const pending = appData.pendingInbox || [];
+            if (pending.length === 0) {
+                badge.classList.add('hidden');
+                clearBtn.classList.add('hidden');
+                container.innerHTML = `<p class="text-[11px] text-cream-500 italic text-center py-2">No pending notifications detected.</p>`;
                 return;
             }
 
-            const sorted = [...appState.transactions].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            badge.classList.remove('hidden');
+            badge.textContent = pending.length;
+            clearBtn.classList.remove('hidden');
 
-            listEl.innerHTML = sorted.map(t => {
-                const isDebit = t.type === 'debit';
-                const timeStr = new Date(t.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-                return `
-                    <div class="beige-card border border-cream-200 rounded-2xl p-3 flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl ${isDebit ? 'bg-rose-50 text-accent-rose border-rose-100' : 'bg-emerald-50 text-accent-emerald border-emerald-100'} border flex items-center justify-center shrink-0 text-sm">
-                                <i class="fa-solid ${isDebit ? 'fa-arrow-up-right-from-square' : 'fa-arrow-down-left-and-arrow-up-right-to-inside'}"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xs font-bold text-cream-900 leading-snug">${t.title}</h4>
-                                <div class="flex items-center gap-1.5 mt-0.5">
-                                    <span class="text-[9px] font-bold px-1.5 py-0.2 rounded border bg-sand-100 border-cream-200 text-cream-800">${t.source}</span>
-                                    <span class="text-[9px] text-cream-400">${timeStr}</span>
-                                </div>
-                            </div>
+            pending.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-white/80 border border-amber-200 rounded-2xl p-3 flex justify-between items-center shadow-sm";
+                card.innerHTML = `
+                    <div class="space-y-0.5">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-xs">💬</span>
+                            <h4 class="text-xs font-extrabold text-cream-900">${item.merchant}</h4>
                         </div>
-                        <div class="text-right">
-                            <p class="text-xs font-extrabold ${isDebit ? 'text-accent-rose' : 'text-accent-emerald'}">
-                                ${isDebit ? '-' : '+'}RM ${t.amount.toFixed(2)}
-                            </p>
-                        </div>
+                        <p class="text-[10px] text-cream-500 font-medium">${item.account} • ${item.category}</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-extrabold text-amber-900">-RM ${item.amount.toFixed(2)}</span>
+                        <button onclick="approvePending('${item.id}')" class="p-1.5 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 active:scale-95" title="Approve">
+                            <i class="fa-solid fa-check text-xs"></i>
+                        </button>
+                        <button onclick="rejectPending('${item.id}')" class="p-1.5 bg-rose-100 text-rose-700 rounded-xl hover:bg-rose-200 active:scale-95" title="Dismiss">
+                            <i class="fa-solid fa-xmark text-xs"></i>
+                        </button>
                     </div>
                 `;
-            }).join('');
+                container.appendChild(card);
+            });
         }
 
-        // Modal Helpers for Budgeting
-        function openBudgetModal() {
-            appState.selectedModalMode = appState.budgetMode;
-            setBudgetModeSelection(appState.budgetMode);
-            document.getElementById('input-daily-budget').value = appState.fixedDailyBudget;
-            document.getElementById('input-monthly-budget').value = appState.monthlyBudget;
-            document.getElementById('budget-modal').classList.remove('hidden');
+        // --- Render Transactions History ---
+        function renderTransactions() {
+            const container = document.getElementById('full-transactions-list');
+            container.innerHTML = '';
+
+            const filtered = appData.transactions.filter(t => {
+                if (currentFilter === 'expense') return t.type === 'expense';
+                if (currentFilter === 'income') return t.type === 'income';
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<p class="text-[11px] text-cream-500 italic text-center py-4">No records found.</p>`;
+                return;
+            }
+
+            filtered.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(t => {
+                const isExp = t.type === 'expense';
+                const row = document.createElement('div');
+                row.className = "flex justify-between items-center bg-sand-100/80 p-2.5 rounded-xl border border-cream-200/80";
+                row.innerHTML = `
+                    <div class="flex items-center space-x-2.5">
+                        <div class="w-8 h-8 rounded-xl ${isExp ? 'bg-amber-100 text-amber-900' : 'bg-emerald-100 text-emerald-900'} flex items-center justify-center text-xs font-bold shrink-0">
+                            ${isExp ? '💸' : '💰'}
+                        </div>
+                        <div>
+                            <h5 class="text-xs font-bold text-cream-900">${t.merchant}</h5>
+                            <p class="text-[9px] text-cream-500">${t.account} • ${new Date(t.date).toLocaleDateString()}</p>
+                        </div>
+                    </div>
+                    <div class="text-right flex items-center gap-2">
+                        <span class="text-xs font-extrabold ${isExp ? 'text-amber-900' : 'text-emerald-800'}">
+                            ${isExp ? '-' : '+'}RM ${t.amount.toFixed(2)}
+                        </span>
+                        <button onclick="deleteTransaction('${t.id}')" class="text-cream-400 hover:text-rose-600 text-xs px-1">
+                            &times;
+                        </button>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
         }
 
-        function setBudgetModeSelection(mode) {
-            appState.selectedModalMode = mode;
-            const dailyBtn = document.getElementById('mode-btn-daily');
-            const monthlyBtn = document.getElementById('mode-btn-monthly');
-            const dailyGroup = document.getElementById('daily-input-group');
-            const monthlyGroup = document.getElementById('monthly-input-group');
-            const desc = document.getElementById('budget-mode-desc');
+        // --- Actions & Business Logic ---
+        function quickAddExpense(amount, merchant, category) {
+            const firstAccount = Object.keys(appData.accounts)[0] || "Touch 'n Go eWallet";
+            
+            if (appData.accounts[firstAccount] < amount) {
+                showToast("⚠️ Insufficient balance in primary account!");
+            }
 
-            if (mode === 'daily') {
-                dailyBtn.className = "flex-1 py-2 rounded-lg text-center bg-cream-900 text-cream-50 transition font-bold";
-                monthlyBtn.className = "flex-1 py-2 rounded-lg text-center text-cream-500 transition font-bold";
-                dailyGroup.classList.remove('hidden');
-                monthlyGroup.classList.add('hidden');
-                desc.innerText = "Set a simple fixed limit for each day (e.g. RM 50/day). Easy to track without complex calculations!";
-            } else {
-                dailyBtn.className = "flex-1 py-2 rounded-lg text-center text-cream-500 transition font-bold";
-                monthlyBtn.className = "flex-1 py-2 rounded-lg text-center bg-cream-900 text-cream-50 transition font-bold";
-                dailyGroup.classList.add('hidden');
-                monthlyGroup.classList.remove('hidden');
-                desc.innerText = "Set a total target for the month (e.g. RM 1500/month). Your daily limit updates dynamically based on remaining days.";
+            appData.accounts[firstAccount] = Math.max(0, appData.accounts[firstAccount] - amount);
+
+            appData.transactions.unshift({
+                id: Date.now().toString(),
+                date: new Date().toISOString(),
+                type: 'expense',
+                amount: amount,
+                merchant: merchant,
+                category: category,
+                account: firstAccount
+            });
+
+            saveToStorage();
+            renderAll();
+            showToast(`Recorded -RM ${amount} for ${merchant}!`);
+        }
+
+        function triggerSimulatedNotification() {
+            const simList = [
+                { merchant: 'Kopitiam Breakfast', amount: 8.50, category: 'Food & Dining' },
+                { merchant: 'Grab Ride', amount: 14.00, category: 'Transportation' },
+                { merchant: '99 Speedmart', amount: 22.40, category: 'Groceries' },
+                { merchant: 'Uniqlo Store', amount: 79.90, category: 'Shopping' }
+            ];
+
+            const item = simList[Math.floor(Math.random() * simList.length)];
+            const targetAccount = Object.keys(appData.accounts)[0] || "Touch 'n Go eWallet";
+
+            appData.pendingInbox.unshift({
+                id: 'p_' + Date.now(),
+                date: new Date().toISOString(),
+                type: 'expense',
+                amount: item.amount,
+                merchant: item.merchant,
+                category: item.category,
+                account: targetAccount
+            });
+
+            saveToStorage();
+            renderPendingInbox();
+            showToast("✨ New auto-captured notification detected!");
+        }
+
+        function approvePending(id) {
+            const idx = appData.pendingInbox.findIndex(p => p.id === id);
+            if (idx > -1) {
+                const item = appData.pendingInbox[idx];
+                
+                if (appData.accounts[item.account] !== undefined) {
+                    appData.accounts[item.account] = Math.max(0, appData.accounts[item.account] - item.amount);
+                }
+
+                appData.transactions.unshift({
+                    ...item,
+                    id: Date.now().toString()
+                });
+
+                appData.pendingInbox.splice(idx, 1);
+                saveToStorage();
+                renderAll();
+                showToast("✅ Approved & account balance updated!");
             }
         }
 
-        function saveBudget() {
-            appState.budgetMode = appState.selectedModalMode;
-            const dailyVal = parseFloat(document.getElementById('input-daily-budget').value);
-            const monthlyVal = parseFloat(document.getElementById('input-monthly-budget').value);
-
-            if (!isNaN(dailyVal) && dailyVal > 0) appState.fixedDailyBudget = dailyVal;
-            if (!isNaN(monthlyVal) && monthlyVal > 0) appState.monthlyBudget = monthlyVal;
-
-            saveToLocalStorage();
-            renderDashboard();
-            closeBudgetModal();
+        function rejectPending(id) {
+            appData.pendingInbox = appData.pendingInbox.filter(p => p.id !== id);
+            saveToStorage();
+            renderPendingInbox();
+            showToast("Dismissed notification.");
         }
 
-        function closeBudgetModal() {
-            document.getElementById('budget-modal').classList.add('hidden');
+        function clearAllPending() {
+            appData.pendingInbox = [];
+            saveToStorage();
+            renderPendingInbox();
+            showToast("Cleared pending list.");
         }
 
-        // Account Balances Modal
-        function openAccountsModal() {
-            const listContainer = document.getElementById('accounts-input-list');
-            listContainer.innerHTML = BANK_LIST.map(bank => {
-                const currentVal = appState.initialBalances[bank.name] !== undefined ? appState.initialBalances[bank.name] : '';
-                return `
-                    <div class="bg-sand-100 border border-cream-200 rounded-xl p-3 flex items-center justify-between gap-2">
-                        <div>
-                            <span class="text-xs font-bold text-cream-900 block">${bank.name}</span>
-                            <span class="text-[10px] text-cream-500">${bank.category}</span>
-                        </div>
-                        <div class="flex items-center gap-1 w-32">
-                            <span class="text-xs font-bold text-cream-500">RM</span>
-                            <input type="number" step="0.01" data-bank-name="${bank.name}" class="account-balance-input w-full bg-cream-50 border border-cream-200 rounded-lg px-2 py-1 text-xs font-extrabold text-cream-900 focus:outline-none focus:border-cream-800" placeholder="0.00" value="${currentVal}">
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            document.getElementById('accounts-modal').classList.remove('hidden');
+        function filterType(type) {
+            currentFilter = type;
+            document.getElementById('filter-all-btn').className = type === 'ALL' ? 'px-2 py-0.5 rounded-lg text-[10px] font-bold bg-cream-900 text-cream-50' : 'px-2 py-0.5 rounded-lg text-[10px] font-bold text-cream-500 hover:text-cream-900';
+            document.getElementById('filter-exp-btn').className = type === 'expense' ? 'px-2 py-0.5 rounded-lg text-[10px] font-bold bg-cream-900 text-cream-50' : 'px-2 py-0.5 rounded-lg text-[10px] font-bold text-cream-500 hover:text-cream-900';
+            document.getElementById('filter-inc-btn').className = type === 'income' ? 'px-2 py-0.5 rounded-lg text-[10px] font-bold bg-cream-900 text-cream-50' : 'px-2 py-0.5 rounded-lg text-[10px] font-bold text-cream-500 hover:text-cream-900';
+            renderTransactions();
         }
 
-        function closeAccountsModal() {
-            document.getElementById('accounts-modal').classList.add('hidden');
+        function deleteTransaction(id) {
+            appData.transactions = appData.transactions.filter(t => t.id !== id);
+            saveToStorage();
+            renderAll();
+            showToast("Record deleted.");
         }
 
-        function saveAccountBalances() {
-            const inputs = document.querySelectorAll('.account-balance-input');
-            const newBalances = {};
-            inputs.forEach(input => {
-                const bankName = input.getAttribute('data-bank-name');
-                const val = parseFloat(input.value);
-                if (!isNaN(val) && val >= 0) newBalances[bankName] = val;
-            });
-            appState.initialBalances = newBalances;
-            saveToLocalStorage();
-            renderDashboard();
-            closeAccountsModal();
+        // --- Modal Handlers ---
+        function openAddAccountModal() {
+            document.getElementById('modal-add-account').classList.remove('hidden');
         }
 
-        // Manual Add Modal
-        function openManualAddModal(type) {
-            appState.pendingType = type;
-            document.getElementById('manual-title').innerText = type === 'debit' ? 'Record Expense' : 'Record Income';
-            document.getElementById('manual-amount').value = '';
-            document.getElementById('manual-title-input').value = '';
-            document.getElementById('manual-modal').classList.remove('hidden');
+        function closeAddAccountModal() {
+            document.getElementById('modal-add-account').classList.add('hidden');
+        }
+
+        function handlePresetBankChange() {
+            const val = document.getElementById('new-account-preset').value;
+            const customContainer = document.getElementById('custom-bank-name-container');
+            if (val === 'CUSTOM') {
+                customContainer.classList.remove('hidden');
+            } else {
+                customContainer.classList.add('hidden');
+            }
+        }
+
+        function handleAddAccountSubmit(e) {
+            e.preventDefault();
+            const preset = document.getElementById('new-account-preset').value;
+            const customName = document.getElementById('custom-account-name').value;
+            const amount = parseFloat(document.getElementById('new-account-amount').value) || 0;
+
+            const name = preset === 'CUSTOM' ? (customName || 'Custom Wallet') : preset;
+
+            appData.accounts[name] = amount;
+            saveToStorage();
+            renderAll();
+            closeAddAccountModal();
+            showToast(`Added ${name}!`);
+        }
+
+        function openEditAccountModal(name, amount) {
+            document.getElementById('edit-account-key').value = name;
+            document.getElementById('edit-account-title').textContent = `Set Balance: ${name}`;
+            document.getElementById('edit-account-amount').value = amount;
+            document.getElementById('modal-edit-account').classList.remove('hidden');
+        }
+
+        function closeEditAccountModal() {
+            document.getElementById('modal-edit-account').classList.add('hidden');
+        }
+
+        function handleEditAccountSubmit(e) {
+            e.preventDefault();
+            const key = document.getElementById('edit-account-key').value;
+            const amount = parseFloat(document.getElementById('edit-account-amount').value) || 0;
+
+            if (key in appData.accounts) {
+                appData.accounts[key] = amount;
+                saveToStorage();
+                renderAll();
+            }
+            closeEditAccountModal();
+            showToast(`Updated balance for ${key}`);
+        }
+
+        function deleteAccountCurrent() {
+            const key = document.getElementById('edit-account-key').value;
+            if (confirm(`Remove account ${key}?`)) {
+                delete appData.accounts[key];
+                saveToStorage();
+                renderAll();
+                closeEditAccountModal();
+                showToast(`Removed ${key}`);
+            }
+        }
+
+        function openManualModal(type) {
+            document.getElementById('m-type').value = type;
+            document.getElementById('manual-modal-title').textContent = type === 'expense' ? 'Add Expense 💸' : 'Add Income / Reload 💰';
+            toggleCategorySelect();
+            document.getElementById('modal-manual').classList.remove('hidden');
         }
 
         function closeManualModal() {
-            document.getElementById('manual-modal').classList.add('hidden');
+            document.getElementById('modal-manual').classList.add('hidden');
         }
 
-        function saveManualTransaction() {
-            const amount = parseFloat(document.getElementById('manual-amount').value);
-            const title = document.getElementById('manual-title-input').value.trim() || (appState.pendingType === 'debit' ? 'Expense' : 'Deposit');
-            const category = document.getElementById('manual-category').value;
-            const source = document.getElementById('manual-source').value;
-            const todayStr = new Date().toISOString().split('T')[0];
-
-            if (isNaN(amount) || amount <= 0) return;
-
-            appState.transactions.push({
-                id: Date.now(),
-                source: source,
-                type: appState.pendingType,
-                category: category,
-                title: title,
-                amount: amount,
-                date: todayStr,
-                timestamp: new Date().toISOString()
-            });
-
-            saveToLocalStorage();
-            renderDashboard();
-            closeManualModal();
-        }
-
-        // Auto Simulation
-        function triggerSimulatedNotification() {
-            const sampleTrx = [
-                { source: "Touch 'n Go eWallet", type: "debit", category: "Food", title: "Tealive Tea", amount: 12.50 },
-                { source: "Maybank (MAE / M2U)", type: "debit", category: "Food", title: "FamilyMart Bento", amount: 15.80 },
-                { source: "Touch 'n Go eWallet", type: "debit", category: "Transport", title: "Shell Fuel Station", amount: 30.00 },
-                { source: "CIMB Bank", type: "credit", category: "General", title: "DuitNow Transfer In", amount: 150.00 }
-            ];
-
-            const randomTrx = sampleTrx[Math.floor(Math.random() * sampleTrx.length)];
-            const todayStr = new Date().toISOString().split('T')[0];
-
-            appState.transactions.push({
-                id: Date.now(),
-                source: randomTrx.source,
-                type: randomTrx.type,
-                category: randomTrx.category,
-                title: randomTrx.title,
-                amount: randomTrx.amount,
-                date: todayStr,
-                timestamp: new Date().toISOString()
-            });
-
-            saveToLocalStorage();
-            renderDashboard();
-
-            const toast = document.getElementById('simulated-notification-toast');
-            document.getElementById('toast-app-name').innerText = randomTrx.source;
-            document.getElementById('toast-message').innerText = `RM ${randomTrx.amount.toFixed(2)} ${randomTrx.type === 'debit' ? 'paid to' : 'received from'} ${randomTrx.title}`;
-
-            toast.classList.remove('hidden');
-            setTimeout(() => toast.classList.remove('translate-y-[-120%]'), 10);
-            setTimeout(() => dismissToast(), 3500);
-        }
-
-        function dismissToast() {
-            const toast = document.getElementById('simulated-notification-toast');
-            toast.classList.add('translate-y-[-120%]');
-            setTimeout(() => toast.classList.add('hidden'), 300);
-        }
-
-        function clearAllTransactions() {
-            appState.transactions = [];
-            saveToLocalStorage();
-            renderDashboard();
-        }
-
-        function saveToLocalStorage() {
-            localStorage.setItem('auto_expense_app_data_v3', JSON.stringify(appState));
-        }
-
-        function loadFromLocalStorage() {
-            const data = localStorage.getItem ? localStorage.getItem('auto_expense_app_data_v3') : null;
-            if (data) {
-                try {
-                    const parsed = JSON.parse(data);
-                    appState = { ...appState, ...parsed };
-                } catch(e) {
-                    console.error("Failed to load local data", e);
-                }
+        function toggleCategorySelect() {
+            const type = document.getElementById('m-type').value;
+            const catContainer = document.getElementById('m-category-container');
+            if (type === 'income') {
+                catContainer.classList.add('hidden');
+            } else {
+                catContainer.classList.remove('hidden');
             }
         }
+
+        function handleManualSubmit(e) {
+            e.preventDefault();
+            const type = document.getElementById('m-type').value;
+            const amount = parseFloat(document.getElementById('m-amount').value) || 0;
+            const merchant = document.getElementById('m-merchant').value;
+            const category = document.getElementById('m-category').value;
+            const account = document.getElementById('m-account').value;
+
+            if (type === 'expense') {
+                if (appData.accounts[account] !== undefined) {
+                    appData.accounts[account] = Math.max(0, appData.accounts[account] - amount);
+                }
+            } else {
+                if (appData.accounts[account] !== undefined) {
+                    appData.accounts[account] += amount;
+                }
+            }
+
+            appData.transactions.unshift({
+                id: Date.now().toString(),
+                date: new Date().toISOString(),
+                type: type,
+                amount: amount,
+                merchant: merchant,
+                category: type === 'expense' ? category : 'Income',
+                account: account
+            });
+
+            saveToStorage();
+            renderAll();
+            closeManualModal();
+            showToast("Saved record!");
+        }
+
+        function openBudgetModal() {
+            document.getElementById('b-limit').value = appData.monthlyBudget || 1500;
+            document.getElementById('modal-budget').classList.remove('hidden');
+        }
+
+        function closeBudgetModal() {
+            document.getElementById('modal-budget').classList.add('hidden');
+        }
+
+        function handleBudgetSubmit(e) {
+            e.preventDefault();
+            const val = parseFloat(document.getElementById('b-limit').value) || 1500;
+            appData.monthlyBudget = val;
+            saveToStorage();
+            renderAll();
+            closeBudgetModal();
+            showToast("Updated budget limit!");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast-banner');
+            document.getElementById('toast-message').textContent = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        function hideToast() {
+            document.getElementById('toast-banner').classList.add('hidden');
+        }
+
+        // --- App Onload Initialization ---
+        window.onload = function() {
+            initApp();
+        };
     </script>
 </body>
 </html>
