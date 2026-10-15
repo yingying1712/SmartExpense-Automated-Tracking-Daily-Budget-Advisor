@@ -126,6 +126,9 @@
             </div>
             
             <div class="flex items-center gap-1.5">
+                <button onclick="openInstallGuideModal()" class="p-2 rounded-full bg-cream-100 border border-cream-200 text-cream-800 text-xs hover:bg-cream-200 active:scale-95 shadow-sm" title="Install Guide & PWA Help">
+                    <i class="fa-solid fa-circle-info"></i>
+                </button>
                 <button onclick="triggerSimulatedNotification()" class="px-2.5 py-1 rounded-full bg-amber-100 border border-amber-200 text-amber-900 text-[11px] font-bold flex items-center gap-1 hover:bg-amber-200 active:scale-95 shadow-sm">
                     <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
                     Sim Alert ✨
@@ -424,6 +427,84 @@
         </div>
     </div>
 
+    <!-- MODAL 5: INSTALLATION GUIDE MODAL -->
+    <div id="modal-install-guide" class="hidden fixed inset-0 bg-cream-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div class="beige-card border border-cream-200 rounded-3xl max-w-md w-full p-5 space-y-4 shadow-2xl my-auto max-h-[85vh] overflow-y-auto hide-scrollbar">
+            <div class="flex justify-between items-center border-b border-cream-200 pb-3">
+                <div class="flex items-center space-x-2">
+                    <span class="text-xl">📱</span>
+                    <h3 class="text-xs font-extrabold text-cream-900">Install App on Phone</h3>
+                </div>
+                <button onclick="closeInstallGuideModal()" class="text-cream-400 hover:text-cream-900 text-lg">&times;</button>
+            </div>
+
+            <!-- Fix error explanation -->
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 text-xs text-amber-900 space-y-1 font-medium">
+                <p class="font-bold flex items-center gap-1">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> Why "Cannot Be Installed"?
+                </p>
+                <p class="text-[11px] leading-relaxed">
+                    Mobile browsers require a public <strong>HTTPS web link</strong>. If you open a local file directly, Chrome/Safari shows <em>"This app cannot be installed"</em>.
+                </p>
+            </div>
+
+            <!-- Fix Options -->
+            <div class="space-y-2 text-xs">
+                <h4 class="font-extrabold text-cream-900">Quick Solutions:</h4>
+
+                <div class="p-3 bg-sand-100 border border-cream-200 rounded-2xl space-y-1">
+                    <strong class="text-cream-900 block font-bold">Option A: "Add to Home Screen" Shortcut</strong>
+                    <p class="text-cream-800 text-[11px] leading-relaxed">
+                        In Chrome/Safari menu, tap <strong>"Add to Home Screen"</strong> or <strong>"Create Shortcut"</strong> (instead of "Install App").
+                    </p>
+                </div>
+
+                <div class="p-3 bg-sand-100 border border-cream-200 rounded-2xl space-y-1">
+                    <strong class="text-cream-900 block font-bold">Option B: Host on Netlify Drop (10 seconds)</strong>
+                    <ol class="list-decimal list-inside space-y-1 text-cream-800 text-[11px] font-medium">
+                        <li>Save this <code class="font-mono bg-cream-200 px-1 rounded">index.html</code>.</li>
+                        <li>Open <a href="https://app.netlify.com/drop" target="_blank" class="text-amber-800 font-bold underline">app.netlify.com/drop</a>.</li>
+                        <li>Drag & drop <code class="font-mono bg-cream-200 px-1 rounded">index.html</code> file.</li>
+                        <li>Open the generated netlify link—now <strong>Install App</strong> works 100%!</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- OS Instructions -->
+            <div class="grid grid-cols-2 gap-2 text-xs pt-1">
+                <!-- iOS -->
+                <div class="bg-sand-100 border border-cream-200 p-3 rounded-2xl space-y-1.5">
+                    <h4 class="font-extrabold text-cream-900 text-[11px] flex items-center gap-1">
+                        <i class="fa-brands fa-apple"></i> iOS Safari
+                    </h4>
+                    <ol class="list-decimal list-inside space-y-1 text-cream-800 font-medium text-[10px]">
+                        <li>Tap <strong>Share</strong> button <i class="fa-solid fa-share-from-square text-amber-800"></i>.</li>
+                        <li>Select <strong>Add to Home Screen</strong>.</li>
+                        <li>Tap <strong>Add</strong> top right.</li>
+                    </ol>
+                </div>
+
+                <!-- Android -->
+                <div class="bg-sand-100 border border-cream-200 p-3 rounded-2xl space-y-1.5">
+                    <h4 class="font-extrabold text-cream-900 text-[11px] flex items-center gap-1">
+                        <i class="fa-brands fa-android text-emerald-700"></i> Android Chrome
+                    </h4>
+                    <ol class="list-decimal list-inside space-y-1 text-cream-800 font-medium text-[10px]">
+                        <li>Tap <strong>Three Dots (⋮)</strong> menu.</li>
+                        <li>Select <strong>Add to Home Screen</strong>.</li>
+                        <li>Tap <strong>Add Automatically</strong>.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="pt-2">
+                <button onclick="downloadHtmlFile()" class="w-full py-2.5 rounded-xl bg-cream-900 hover:bg-cream-800 text-cream-50 text-xs font-bold shadow-md transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-download"></i> Download HTML Code
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         /* Application State */
         let state = {
@@ -672,6 +753,26 @@
 
         window.closeBudgetModal = function() {
             document.getElementById('modal-budget').classList.add('hidden');
+        };
+
+        window.openInstallGuideModal = function() {
+            document.getElementById('modal-install-guide').classList.remove('hidden');
+        };
+
+        window.closeInstallGuideModal = function() {
+            document.getElementById('modal-install-guide').classList.add('hidden');
+        };
+
+        window.downloadHtmlFile = function() {
+            const htmlContent = document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const element = document.createElement('a');
+            element.href = URL.createObjectURL(blob);
+            element.download = 'SmartExpense_App.html';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+            showToast("Downloaded SmartExpense_App.html!");
         };
 
         window.handleBudgetSubmit = function(e) {
