@@ -2,9 +2,11 @@
   "id": "./",
   "name": "cat-ching Expense Tracker",
   "short_name": "cat-ching",
+  "description": "A cute and simple expense tracker",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#fff8e7",
   "theme_color": "#fff8e7",
   "icons": [

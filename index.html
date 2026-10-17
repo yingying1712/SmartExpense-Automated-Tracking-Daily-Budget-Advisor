@@ -13,25 +13,10 @@
 
     <!-- Inline SVG Cat Icon Favicon based on uploaded cute cat wallet design -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23fff8e7'/><circle cx='50' cy='50' r='42' fill='%23fcfcf6' stroke='%23e8dacb' stroke-width='2'/><path d='M28 35 L38 18 L48 30 Z' fill='%23cfb291'/><path d='M72 35 L62 18 L52 30 Z' fill='%23cfb291'/><ellipse cx='50' cy='48' rx='24' ry='20' fill='%23ffffff' stroke='%235c4838' stroke-width='2.5'/><circle cx='40' cy='45' r='3' fill='%235c4838'/><circle cx='60' cy='45' r='3' fill='%235c4838'/><path d='M47 51 Q50 54 53 51' stroke='%235c4838' stroke-width='2' fill='none' stroke-linecap='round'/><rect x='32' y='58' width='36' height='24' rx='5' fill='%238c6d53' stroke='%235c4838' stroke-width='2'/><circle cx='40' cy='70' r='5' fill='%23f4dcd0' stroke='%235c4838' stroke-width='1.5'/><text x='40' y='73.5' font-size='6' font-family='sans-serif' font-weight='bold' text-anchor='middle' fill='%235c4838'>$</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23fff8e7'/><circle cx='50' cy='50' r='42' fill='%23fcfcf6' stroke='%23e8dacb' stroke-width='2'/><path d='M28 35 L38 18 L48 30 Z' fill='%23cfb291'/><path d='M72 35 L62 18 L52 30 Z' fill='%23cfb291'/><ellipse cx='50' cy='48' rx='24' ry='20' fill='%23ffffff' stroke='%235c4838' stroke-width='2.5'/><circle cx='40' cy='45' r='3' fill='%235c4838'/><circle cx='60' cy='45' r='3' fill='%235c4838'/><path d='M47 51 Q50 54 53 51' stroke='%235c4838' stroke-width='2' fill='none' stroke-linecap='round'/><rect x='32' y='58' width='36' height='24' rx='5' fill='%238c6d53' stroke='%235c4838' stroke-width='2'/><circle cx='40' cy='70' r='5' fill='%23f4dcd0' stroke='%235c4838' stroke-width='1.5'/><text x='40' y='73.5' font-size='6' font-family='sans-serif' font-weight='bold' text-anchor='middle' fill='%235c4838'>$</text></svg>">
-
-    <!-- Web App Manifest for Full PWA Chrome Installation -->
-    <link rel="manifest" href="data:application/json;choice=1,{
-        %22name%22:%22cat-ching Expense Tracker%22,
-        %22short_name%22:%22cat-ching%22,
-        %22start_url%22:%22./%22,
-        %22display%22:%22standalone%22,
-        %22background_color%22:%22%23fff8e7%22,
-        %22theme_color%22:%22%23fff8e7%22,
-        %22icons%22:[{
-            %22src%22:%22data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23fff8e7'/><circle cx='50' cy='50' r='42' fill='%23fcfcf6' stroke='%23e8dacb' stroke-width='2'/><path d='M28 35 L38 18 L48 30 Z' fill='%23cfb291'/><path d='M72 35 L62 18 L52 30 Z' fill='%23cfb291'/><ellipse cx='50' cy='48' rx='24' ry='20' fill='%23ffffff' stroke='%235c4838' stroke-width='2.5'/><circle cx='40' cy='45' r='3' fill='%235c4838'/><circle cx='60' cy='45' r='3' fill='%235c4838'/><path d='M47 51 Q50 54 53 51' stroke='%235c4838' stroke-width='2' fill='none' stroke-linecap='round'/><rect x='32' y='58' width='36' height='24' rx='5' fill='%238c6d53' stroke='%235c4838' stroke-width='2'/><circle cx='40' cy='70' r='5' fill='%23f4dcd0' stroke='%235c4838' stroke-width='1.5'/><text x='40' y='73.5' font-size='6' font-family='sans-serif' font-weight='bold' text-anchor='middle' fill='%235c4838'>$</text></svg>%22,
-            %22sizes%22:%22512x512%22,
-            %22type%22:%22image/svg+xml%22,
-            %22purpose%22:%22any maskable%22
-        }]
-    }">
-    
-    <!-- Tailwind CSS -->
+    <link rel="apple-touch-icon" href="./icons/icon-192.png">
+<!-- Web App Manifest -->
+    <link rel="manifest" href="./manifest.json">
+<!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -1302,15 +1287,19 @@
             document.addEventListener('visibilitychange', () => { if (!document.hidden) recordNativeNotificationEvents(); });
         }
 
-        // Register dummy service worker to satisfy PWA installation criteria in Chrome
+        // Register the real service worker served from this GitHub Pages site.
         if ('serviceWorker' in navigator) {
-            const swCode = "self.addEventListener('fetch', function(e) { e.respondWith(fetch(e.request)); });";
-            const blob = new Blob([swCode], { type: 'text/javascript' });
-            const swUrl = URL.createObjectURL(blob);
-            navigator.serviceWorker.register(swUrl).catch(() => {});
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then((registration) => {
+                        console.log('cat-ching service worker registered:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.error('cat-ching service worker registration failed:', error);
+                    });
+            });
         }
-
-        // Extra safety: flush the latest state when the page is hidden or closed.
+// Extra safety: flush the latest state when the page is hidden or closed.
         document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') persistAppData(); });
         window.addEventListener('pagehide', persistAppData);
 
