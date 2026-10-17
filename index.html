@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>cat-ching Expense Tracker</title>
+    
+    <!-- PWA & Mobile Icons -->
+    <meta name="theme-color" content="#fff8e7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="cat-ching">
+
+    <!-- Inline SVG Cat Icon Favicon based on uploaded cute cat wallet design -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23fff8e7'/><circle cx='50' cy='50' r='42' fill='%23fcfcf6' stroke='%23e8dacb' stroke-width='2'/><path d='M28 35 L38 18 L48 30 Z' fill='%23cfb291'/><path d='M72 35 L62 18 L52 30 Z' fill='%23cfb291'/><ellipse cx='50' cy='48' rx='24' ry='20' fill='%23ffffff' stroke='%235c4838' stroke-width='2.5'/><circle cx='40' cy='45' r='3' fill='%235c4838'/><circle cx='60' cy='45' r='3' fill='%235c4838'/><path d='M47 51 Q50 54 53 51' stroke='%235c4838' stroke-width='2' fill='none' stroke-linecap='round'/><rect x='32' y='58' width='36' height='24' rx='5' fill='%238c6d53' stroke='%235c4838' stroke-width='2'/><circle cx='40' cy='70' r='5' fill='%23f4dcd0' stroke='%235c4838' stroke-width='1.5'/><text x='40' y='73.5' font-size='6' font-family='sans-serif' font-weight='bold' text-anchor='middle' fill='%235c4838'>$</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23fff8e7'/><circle cx='50' cy='50' r='42' fill='%23fcfcf6' stroke='%23e8dacb' stroke-width='2'/><path d='M28 35 L38 18 L48 30 Z' fill='%23cfb291'/><path d='M72 35 L62 18 L52 30 Z' fill='%23cfb291'/><ellipse cx='50' cy='48' rx='24' ry='20' fill='%23ffffff' stroke='%235c4838' stroke-width='2.5'/><circle cx='40' cy='45' r='3' fill='%235c4838'/><circle cx='60' cy='45' r='3' fill='%235c4838'/><path d='M47 51 Q50 54 53 51' stroke='%235c4838' stroke-width='2' fill='none' stroke-linecap='round'/><rect x='32' y='58' width='36' height='24' rx='5' fill='%238c6d53' stroke='%235c4838' stroke-width='2'/><circle cx='40' cy='70' r='5' fill='%23f4dcd0' stroke='%235c4838' stroke-width='1.5'/><text x='40' y='73.5' font-size='6' font-family='sans-serif' font-weight='bold' text-anchor='middle' fill='%235c4838'>$</text></svg>">
+
+    <!-- Web App Manifest for Full PWA Chrome Installation -->
+    <link rel="manifest" href="data:application/json;choice=1,{
+        %22name%22:%22cat-ching Expense Tracker%22,
+        %22short_name%22:%22cat-ching%22,
+        %22start_url%22:%22./%22,
+        %22display%22:%22standalone%22,
+        %22background_color%22:%22%23fff8e7%22,
+        %22theme_color%22:%22%23fff8e7%22,
+        %22icons%22:[{
+            %22src%22:%22data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23fff8e7'/><circle cx='50' cy='50' r='42' fill='%23fcfcf6' stroke='%23e8dacb' stroke-width='2'/><path d='M28 35 L38 18 L48 30 Z' fill='%23cfb291'/><path d='M72 35 L62 18 L52 30 Z' fill='%23cfb291'/><ellipse cx='50' cy='48' rx='24' ry='20' fill='%23ffffff' stroke='%235c4838' stroke-width='2.5'/><circle cx='40' cy='45' r='3' fill='%235c4838'/><circle cx='60' cy='45' r='3' fill='%235c4838'/><path d='M47 51 Q50 54 53 51' stroke='%235c4838' stroke-width='2' fill='none' stroke-linecap='round'/><rect x='32' y='58' width='36' height='24' rx='5' fill='%238c6d53' stroke='%235c4838' stroke-width='2'/><circle cx='40' cy='70' r='5' fill='%23f4dcd0' stroke='%235c4838' stroke-width='1.5'/><text x='40' y='73.5' font-size='6' font-family='sans-serif' font-weight='bold' text-anchor='middle' fill='%235c4838'>$</text></svg>%22,
+            %22sizes%22:%22512x512%22,
+            %22type%22:%22image/svg+xml%22,
+            %22purpose%22:%22any maskable%22
+        }]
+    }">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cat-main': '#fff8e7',
+                        'cat-sub': '#fcfcf6',
+                        'cat-accent': '#cfb291',
+                        'cat-dark': '#5c4838',
+                        'cat-soft': '#e8dacb',
+                        'cat-pink': '#f4dcd0',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Chart.js for Visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body {
+            background-color: #fff8e7;
+            color: #5c4838;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        
+        .cat-card {
+            background-color: #fcfcf6;
+            border: 1.5px solid #e8dacb;
+            box-shadow: 0 4px 12px rgba(207, 178, 145, 0.12);
+        }
+
+        /* Hide scrollbars */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        @keyframes subtle-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .pulse-subtle {
+            animation: subtle-pulse 2.5s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex justify-center bg-[#fff8e7]">
+
+    <div id="app" class="w-full max-w-md min-h-screen flex flex-col justify-between relative pb-20 select-none">
+        
+        <!-- CLEAN TOP HEADER -->
+        <header class="p-4 pt-5 flex justify-between items-center bg-[#fff8e7] sticky top-0 z-20 border-b border-[#e8dacb]/40">
+            <!-- Auto-Sync Status Switch Button -->
+            <button onclick="openNotificationSetupModal()" class="flex items-center gap-2 bg-[#fcfcf6] px-3 py-1.5 rounded-xl border border-[#e8dacb] shadow-sm hover:border-[#cfb291] transition">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block pulse-subtle"></span>
+                <span id="sync-status-text" class="text-xs text-[#5c4838] font-bold">Auto-Sync On</span>
+                <i data-lucide="settings" class="w-3.5 h-3.5 text-[#8c7a6b] ml-1"></i>
+            </button>
+
+            <!-- Current Date Display -->
+            <div class="text-xs text-[#8c7a6b] font-medium bg-[#fcfcf6] px-3 py-1.5 rounded-xl border border-[#e8dacb]">
+                <span id="live-time-display">Oct 17, 2026</span>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT VIEW HOLDER -->
+        <main id="main-content" class="px-4 py-3 flex-1">
+            <!-- Dynamic Page Content Injected Here -->
+        </main>
+
+        <!-- BOTTOM NAVIGATION BAR -->
+        <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-[#fcfcf6] border-t border-[#e8dacb] px-8 py-3 flex justify-around items-center z-30 shadow-lg">
+            <button id="nav-overview" onclick="switchPage('overview')" class="flex flex-col items-center gap-1 text-[#cfb291] transition">
+                <div class="p-2 rounded-xl bg-[#fff8e7] border border-[#e8dacb]">
+                    <i data-lucide="wallet" class="w-5 h-5"></i>
+                </div>
+                <span class="text-[11px] font-bold">Overview</span>
+            </button>
+
+            <button id="nav-category" onclick="switchPage('category')" class="flex flex-col items-center gap-1 text-[#8c7a6b] transition">
+                <div class="p-2 rounded-xl bg-transparent">
+                    <i data-lucide="pie-chart" class="w-5 h-5"></i>
+                </div>
+                <span class="text-[11px] font-medium">Category</span>
+            </button>
+        </nav>
+
+        <!-- MODAL CONTAINERS -->
+        <div id="modal-container"></div>
+    </div>
+
+    <script>
+        // Application Data Store with Multi-Month Transactions
+        let appData = {
+            autoSyncEnabled: true,
+            monthlyBudget: 3500.00,
+            selectedMonthYear: "2026-10",
+            accounts: [
+                { id: 'tng', name: "Touch 'n Go eWallet", balance: 168.00 },
+                { id: 'bank_islam', name: "Bank Islam", balance: 4000.00 },
+                { id: 'maybank', name: "Maybank", balance: 1250.00 }
+            ],
+            // Custom Categories Store
+            customCategories: {
+                'Food & Drink': { icon: 'utensils', color: '#e8a598', desc: 'Rice, Coffee, Snacks, Dinners' },
+                'Groceries': { icon: 'shopping-bag', color: '#b2c8b2', desc: 'Market items, Soap, Home goods' },
+                'Travel & Fuel': { icon: 'car', color: '#9bb8d3', desc: 'Petrol, Toll, Taxi, Bus, Train' },
+                'Health': { icon: 'heart-pulse', color: '#d9b48f', desc: 'Medicine, Pharmacy, Checkups' },
+                'Fashion': { icon: 'shirt', color: '#d1a3c4', desc: 'Clothes, Shoes, Beauty' },
+                'Other Expenses': { icon: 'more-horizontal', color: '#c4b9a5', desc: 'Miscellaneous spending' }
+            },
+            transactions: [
+                // Current Month (October 2026)
+                {
+                    id: 1,
+                    type: 'expense',
+                    category: 'Food & Drink',
+                    amount: 50.00,
+                    account: "Touch 'n Go eWallet",
+                    time: "9:10 PM",
+                    date: "2026-10-17",
+                    details: "Dinner at Nasi Kandar - Chicken Rice & Iced Tea"
+                },
+                {
+                    id: 2,
+                    type: 'expense',
+                    category: 'Groceries',
+                    amount: 60.00,
+                    account: "Bank Islam",
+                    time: "10:30 AM",
+                    date: "2026-10-17",
+                    details: "Watsons - Shampoo & Tissue"
+                },
+                {
+                    id: 3,
+                    type: 'expense',
+                    category: 'Travel & Fuel',
+                    amount: 40.00,
+                    account: "Bank Islam",
+                    time: "9:15 AM",
+                    date: "2026-10-17",
+                    details: "Petrol refill at Shell"
+                },
+                // Last Month (September 2026)
+                {
+                    id: 4,
+                    type: 'expense',
+                    category: 'Food & Drink',
+                    amount: 120.00,
+                    account: "Touch 'n Go eWallet",
+                    time: "8:00 PM",
+                    date: "2026-09-28",
+                    details: "Steamboat Dinner with friends"
+                },
+                {
+                    id: 5,
+                    type: 'expense',
+                    category: 'Fashion',
+                    amount: 150.00,
+                    account: "Maybank",
+                    time: "3:15 PM",
+                    date: "2026-09-15",
+                    details: "New shoes from Outlet store"
+                },
+                {
+                    id: 6,
+                    type: 'income',
+                    category: 'Salary',
+                    amount: 4000.00,
+                    account: "Bank Islam",
+                    time: "12:00 AM",
+                    date: "2026-09-25",
+                    details: "Monthly Salary Transfer"
+                },
+                // Previous Month (August 2026)
+                {
+                    id: 7,
+                    type: 'expense',
+                    category: 'Health',
+                    amount: 90.00,
+                    account: "Maybank",
+                    time: "2:00 PM",
+                    date: "2026-08-10",
+                    details: "Pharmacy vitamins and checkup"
+                }
+            ]
+        };
+
+        // Keep the user's records on this device between app launches.
+        const STORAGE_KEY = 'cat_ching_expense_tracker_v1';
+        try {
+            const savedData = localStorage.getItem(STORAGE_KEY);
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                if (parsedData && typeof parsedData === 'object') {
+                    appData = { ...appData, ...parsedData };
+                }
+            }
+        } catch (error) {
+            console.warn('Could not load saved cat-ching data:', error);
+        }
+
+        function persistAppData() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+            } catch (error) {
+                console.error('Could not save cat-ching data:', error);
+            }
+        }
+
+        function getLocalDateString(date = new Date()) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        let currentPage = 'overview';
+        let expandedTxId = null;
+
+        // English Income Labels
+        const INCOME_LABELS = [
+            'Salary',
+            'Refund / Cash Back',
+            'Money Transfer In',
+            'Bonus / Side Income'
+        ];
+
+        // Comprehensive list of all major Malaysian banks and e-wallets
+        const BANK_OPTIONS = [
+            "Touch 'n Go eWallet",
+            "Maybank (MBB)",
+            "CIMB Bank",
+            "Public Bank",
+            "RHB Bank",
+            "Hong Leong Bank",
+            "AmBank",
+            "Bank Islam",
+            "Alliance Bank",
+            "OCBC Bank",
+            "HSBC Bank",
+            "Standard Chartered",
+            "UOB Bank",
+            "Affin Bank",
+            "Bank Muamalat",
+            "Agrobank",
+            "GXBank",
+            "Rize (RHB)",
+            "Aeon Bank",
+            "ShopeePay",
+            "GrabPay",
+            "Boost",
+            "BigPay",
+            "Wise",
+            "ICBC Bank",
+            "Bank Rakyat"
+        ];
+
+        // Icon options for custom category builder
+        const CATEGORY_ICON_OPTIONS = [
+            { name: 'shopping-bag', label: 'Bag' },
+            { name: 'utensils', label: 'Food' },
+            { name: 'car', label: 'Travel' },
+            { name: 'heart-pulse', label: 'Health' },
+            { name: 'shirt', label: 'Clothes' },
+            { name: 'film', label: 'Movies' },
+            { name: 'coffee', label: 'Coffee' },
+            { name: 'gamepad-2', label: 'Games' },
+            { name: 'zap', label: 'Bills' },
+            { name: 'book-open', label: 'Books' },
+            { name: 'gift', label: 'Gifts' },
+            { name: 'dumbbell', label: 'Gym' }
+        ];
+
+        const COLOR_OPTIONS = ['#e8a598', '#b2c8b2', '#9bb8d3', '#d9b48f', '#d1a3c4', '#c4b9a5', '#f4a261', '#2a9d8f'];
+
+        // Available Months Selector Options
+        const MONTH_OPTIONS = [
+            { id: '2026-10', name: 'October 2026 (This Month)' },
+            { id: '2026-09', name: 'September 2026 (Last Month)' },
+            { id: '2026-08', name: 'August 2026' },
+            { id: '2026-07', name: 'July 2026' },
+            { id: '2026-06', name: 'June 2026' }
+        ];
+
+        function getTotalBalance() {
+            return appData.accounts.reduce((acc, cur) => acc + cur.balance, 0);
+        }
+
+        function getMonthlyExpenses() {
+            return appData.transactions
+                .filter(t => t.type === 'expense' && t.date.startsWith(appData.selectedMonthYear))
+                .reduce((acc, cur) => acc + cur.amount, 0);
+        }
+
+        function getMonthlyIncome() {
+            return appData.transactions
+                .filter(t => t.type === 'income' && t.date.startsWith(appData.selectedMonthYear))
+                .reduce((acc, cur) => acc + cur.amount, 0);
+        }
+
+        function getDaysRemainingInMonth() {
+            const parts = appData.selectedMonthYear.split('-');
+            const year = parseInt(parts[0]);
+            const month = parseInt(parts[1]);
+            const totalDays = new Date(year, month, 0).getDate();
+            const now = new Date();
+            
+            if (now.getFullYear() > year || (now.getFullYear() === year && (now.getMonth() + 1) > month)) {
+                return 1;
+            }
+            const currentDay = (now.getFullYear() === year && (now.getMonth() + 1) === month) ? now.getDate() : 1;
+            return Math.max(1, totalDays - currentDay + 1);
+        }
+
+        function getDailyRecommendedBalance() {
+            const totalBalance = getTotalBalance();
+            const daysLeft = getDaysRemainingInMonth();
+            return (totalBalance / daysLeft).toFixed(2);
+        }
+
+        function renderOverview() {
+            persistAppData();
+            const totalBal = getTotalBalance();
+            const totalExp = getMonthlyExpenses();
+            const dailyBal = getDailyRecommendedBalance();
+            const daysLeft = getDaysRemainingInMonth();
+            const expPercentage = appData.monthlyBudget > 0 ? Math.min(100, (totalExp / appData.monthlyBudget) * 100).toFixed(1) : 0;
+
+            const filteredTx = appData.transactions.filter(t => t.date.startsWith(appData.selectedMonthYear));
+
+            const html = `
+                <!-- MONTH SELECTOR -->
+                <div class="flex justify-between items-center mb-4">
+                    <div class="relative inline-block w-full max-w-[220px]">
+                        <select onchange="changeMonth(this.value)" class="w-full bg-[#fcfcf6] border border-[#e8dacb] text-[#5c4838] font-bold text-xs rounded-xl px-3 py-2 pr-7 focus:outline-none shadow-sm appearance-none cursor-pointer">
+                            ${MONTH_OPTIONS.map(m => `
+                                <option value="${m.id}" ${appData.selectedMonthYear === m.id ? 'selected' : ''}>${m.name}</option>
+                            `).join('')}
+                        </select>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-[#8c7a6b] absolute right-2.5 top-2.5 pointer-events-none"></i>
+                    </div>
+
+                    <div class="text-[11px] font-bold text-[#8c7a6b] bg-[#fcfcf6] px-2.5 py-1.5 rounded-xl border border-[#e8dacb]">
+                        ${appData.selectedMonthYear === '2026-10' ? 'Current Month' : 'Past History'}
+                    </div>
+                </div>
+
+                <!-- MAIN TOTAL BALANCE & BUDGET CARD -->
+                <div class="cat-card rounded-2xl p-4 mb-5 border border-[#e8dacb] bg-[#fcfcf6] relative overflow-hidden">
+                    <div class="text-center mb-3">
+                        <span class="text-[11px] text-[#8c7a6b] uppercase tracking-wider font-semibold">Total Money Left</span>
+                        <div class="text-3xl font-extrabold text-[#5c4838] mt-0.5">
+                            <span class="text-lg font-medium">RM</span> ${totalBal.toFixed(2)}
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2 py-2 border-t border-[#e8dacb]/60 text-center">
+                        <div>
+                            <span class="text-[10px] text-[#8c7a6b] font-medium block">Spent</span>
+                            <span class="text-xs font-bold text-rose-600">RM ${totalExp.toFixed(2)}</span>
+                        </div>
+                        <div class="border-x border-[#e8dacb]/60 px-1">
+                            <span class="text-[10px] text-[#8c7a6b] font-medium block">Daily Limit</span>
+                            <span class="text-xs font-bold text-emerald-700">RM ${dailyBal}</span>
+                        </div>
+                        <div class="relative">
+                            <div class="flex items-center justify-center gap-0.5">
+                                <span class="text-[10px] text-[#8c7a6b] font-medium">Budget Target</span>
+                                <button onclick="openSetBudgetModal()" class="text-[#cfb291] hover:text-[#5c4838]">
+                                    <i data-lucide="edit-3" class="w-3 h-3"></i>
+                                </button>
+                            </div>
+                            <span class="text-xs font-bold text-[#5c4838]">RM ${appData.monthlyBudget.toFixed(2)}</span>
+                        </div>
+                    </div>
+
+                    <!-- Budget Progress Bar -->
+                    <div class="mt-3">
+                        <div class="flex justify-between text-[10px] text-[#8c7a6b] mb-1 font-semibold">
+                            <span>${expPercentage}% spent</span>
+                            <span>${daysLeft} days left</span>
+                        </div>
+                        <div class="w-full h-3 bg-[#e8dacb]/50 rounded-full overflow-hidden border border-[#e8dacb]">
+                            <div class="h-full bg-gradient-to-r from-[#cfb291] to-[#b89b7a] rounded-full transition-all duration-500" style="width: ${expPercentage}%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACCOUNTS & WALLETS SECTION -->
+                <div class="mb-5">
+                    <div class="flex justify-between items-center mb-2.5">
+                        <h2 class="font-bold text-xs text-[#5c4838] flex items-center gap-1.5 uppercase tracking-wider">
+                            <i data-lucide="credit-card" class="w-4 h-4 text-[#cfb291]"></i> Banks & Wallets
+                        </h2>
+                        <button onclick="openAddAccountModal()" class="text-[11px] bg-[#fff8e7] border border-[#cfb291] text-[#5c4838] px-2.5 py-1 rounded-xl font-semibold flex items-center gap-1 hover:bg-[#cfb291] hover:text-white transition">
+                            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Bank
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2.5">
+                        ${appData.accounts.map(acc => `
+                            <div class="cat-card p-3 rounded-2xl border border-[#e8dacb] relative">
+                                <div class="flex justify-between items-start mb-1">
+                                    <span class="text-xs font-bold text-[#5c4838] truncate max-w-[80%]">${acc.name}</span>
+                                    <button onclick="openEditAccountModal('${acc.id}')" class="text-[#cfb291] hover:text-[#5c4838]">
+                                        <i data-lucide="pencil" class="w-3 h-3"></i>
+                                    </button>
+                                </div>
+                                <div class="text-sm font-extrabold text-[#5c4838]">
+                                    RM ${acc.balance.toFixed(2)}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <!-- TRANSACTIONS LIST SECTION -->
+                <div class="mb-5">
+                    <div class="flex justify-between items-center mb-2.5">
+                        <span class="font-bold text-xs text-[#5c4838] uppercase tracking-wider">
+                            Records (${filteredTx.length})
+                        </span>
+                        <div class="flex gap-2 text-[10px] font-bold">
+                            <span class="text-rose-600 bg-rose-50 px-2 py-0.5 rounded-lg border border-rose-100">Spent RM ${totalExp.toFixed(2)}</span>
+                            <span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-100">Income RM ${getMonthlyIncome().toFixed(2)}</span>
+                        </div>
+                    </div>
+
+                    <!-- Transactions List -->
+                    <div class="space-y-2">
+                        ${filteredTx.length === 0 ? `
+                            <div class="cat-card p-6 text-center text-xs text-[#8c7a6b] rounded-2xl">
+                                No records found for this month.
+                            </div>
+                        ` : filteredTx.map(tx => {
+                            const catInfo = appData.customCategories[tx.category] || (tx.type === 'transfer' ? { icon: 'arrow-left-right', color: '#cfb291' } : { icon: 'more-horizontal', color: '#c4b9a5' });
+                            const isExpanded = expandedTxId === tx.id;
+                            
+                            return `
+                                <div class="cat-card rounded-2xl border border-[#e8dacb] overflow-hidden transition">
+                                    <div onclick="toggleExpandTx(${tx.id})" class="p-3 flex items-center justify-between cursor-pointer hover:bg-[#fff8e7]/50">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white" style="background-color: ${catInfo.color}">
+                                                <i data-lucide="${catInfo.icon}" class="w-4 h-4"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="text-xs font-bold text-[#5c4838]">${tx.category}</h4>
+                                                <p class="text-[10px] text-[#8c7a6b]">${tx.date} • ${tx.time}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex items-center gap-2">
+                                            <div class="text-right">
+                                                <span class="text-xs font-extrabold ${tx.type === 'expense' ? 'text-rose-600' : (tx.type === 'transfer' ? 'text-[#8c7a6b]' : 'text-emerald-700')}">
+                                                    ${tx.type === 'expense' ? '−' : (tx.type === 'transfer' ? '↔' : '+')} RM ${tx.amount.toFixed(2)}
+                                                </span>
+                                                <span class="block text-[10px] text-[#8c7a6b]">${tx.account}</span>
+                                            </div>
+                                            <i data-lucide="${isExpanded ? 'chevron-down' : 'chevron-right'}" class="w-4 h-4 text-[#cfb291]"></i>
+                                        </div>
+                                    </div>
+
+                                    ${isExpanded ? `
+                                        <div class="px-3 pb-3 pt-1 border-t border-[#e8dacb]/50 bg-[#fff8e7]/30 text-xs">
+                                            <div class="flex justify-between items-start mb-1">
+                                                <span class="font-semibold text-[#8c7a6b] text-[11px]">Note / Details:</span>
+                                                <button onclick="confirmDeleteTransaction(${tx.id})" class="text-rose-600 hover:bg-rose-100/60 px-2 py-0.5 rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+                                                    <i data-lucide="trash-2" class="w-3 h-3"></i> Delete
+                                                </button>
+                                            </div>
+                                            <p class="text-[#5c4838] bg-[#fcfcf6] p-2 rounded-xl border border-[#e8dacb] text-xs font-medium">
+                                                ${tx.details || 'No details provided.'}
+                                            </p>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+
+                <!-- RECORD BUTTONS -->
+                <div class="mb-6">
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="openAddTransactionModal('income')" class="cat-card p-3 rounded-2xl border border-[#e8dacb] flex items-center justify-center gap-2 font-bold text-xs text-emerald-700 hover:bg-emerald-50 transition active:scale-95">
+                            <div class="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center">
+                                <i data-lucide="plus-circle" class="w-4 h-4 text-emerald-700"></i>
+                            </div>
+                            + Add Income
+                        </button>
+
+                        <button onclick="openAddTransactionModal('expense')" class="cat-card p-3 rounded-2xl border border-[#e8dacb] flex items-center justify-center gap-2 font-bold text-xs text-rose-600 hover:bg-rose-50 transition active:scale-95">
+                            <div class="w-6 h-6 rounded-full bg-rose-100 flex items-center justify-center">
+                                <i data-lucide="minus-circle" class="w-4 h-4 text-rose-600"></i>
+                            </div>
+                            - Add Expense
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('main-content').innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function toggleExpandTx(id) {
+            expandedTxId = expandedTxId === id ? null : id;
+            renderOverview();
+        }
+
+        function renderCategoryPage() {
+            persistAppData();
+            const expenses = appData.transactions.filter(t => t.type === 'expense' && t.date.startsWith(appData.selectedMonthYear));
+            const totalExp = expenses.reduce((acc, cur) => acc + cur.amount, 0);
+
+            const categorySums = {};
+            Object.keys(appData.customCategories).forEach(cat => categorySums[cat] = 0);
+            expenses.forEach(t => {
+                categorySums[t.category] = (categorySums[t.category] || 0) + t.amount;
+            });
+
+            const html = `
+                <!-- MONTH SELECTOR & ADD CATEGORY BUTTON -->
+                <div class="flex justify-between items-center mb-4">
+                    <div class="relative inline-block w-full max-w-[180px]">
+                        <select onchange="changeMonth(this.value)" class="w-full bg-[#fcfcf6] border border-[#e8dacb] text-[#5c4838] font-bold text-xs rounded-xl px-3 py-2 pr-7 focus:outline-none shadow-sm appearance-none cursor-pointer">
+                            ${MONTH_OPTIONS.map(m => `
+                                <option value="${m.id}" ${appData.selectedMonthYear === m.id ? 'selected' : ''}>${m.name}</option>
+                            `).join('')}
+                        </select>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-[#8c7a6b] absolute right-2.5 top-2.5 pointer-events-none"></i>
+                    </div>
+
+                    <button onclick="openAddCategoryModal()" class="text-[11px] bg-[#fff8e7] border border-[#cfb291] text-[#5c4838] px-3 py-2 rounded-xl font-bold flex items-center gap-1 hover:bg-[#cfb291] hover:text-white transition shadow-sm">
+                        <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Category
+                    </button>
+                </div>
+
+                <!-- CATEGORY PIE CHART CARD -->
+                <div class="cat-card p-4 rounded-2xl border border-[#e8dacb] bg-[#fcfcf6] mb-5">
+                    <h3 class="text-xs font-bold text-[#8c7a6b] uppercase tracking-wider mb-3 text-center">
+                        Expenses Breakdown
+                    </h3>
+                    <div class="w-44 h-44 mx-auto relative flex items-center justify-center">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- CATEGORIES DETAILED LIST -->
+                <div class="space-y-3 mb-6">
+                    ${Object.keys(appData.customCategories).map(catName => {
+                        const amount = categorySums[catName] || 0;
+                        const percentage = totalExp > 0 ? ((amount / totalExp) * 100).toFixed(1) : '0.0';
+                        const catInfo = appData.customCategories[catName];
+                        const catItems = expenses.filter(t => t.category === catName);
+
+                        return `
+                            <div class="cat-card p-3 rounded-2xl border border-[#e8dacb]">
+                                <div class="flex items-center justify-between mb-1">
+                                    <div class="flex items-center gap-2.5">
+                                        <div class="w-8 h-8 rounded-xl flex items-center justify-center text-white text-xs" style="background-color: ${catInfo.color}">
+                                            <i data-lucide="${catInfo.icon}" class="w-4 h-4"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-xs font-bold text-[#5c4838]">${catName}</h4>
+                                            <span class="text-[10px] text-[#8c7a6b] font-medium">${catInfo.desc}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-right">
+                                        <span class="text-xs font-extrabold text-[#5c4838]">RM ${amount.toFixed(2)}</span>
+                                        <span class="block text-[10px] text-[#8c7a6b] font-semibold">${percentage}%</span>
+                                    </div>
+                                </div>
+
+                                <div class="w-full h-2 bg-[#e8dacb]/40 rounded-full overflow-hidden mt-1.5 border border-[#e8dacb]/50">
+                                    <div class="h-full rounded-full" style="width: ${percentage}%; background-color: ${catInfo.color}"></div>
+                                </div>
+
+                                ${catItems.length > 0 ? `
+                                    <div class="mt-2 pt-2 border-t border-[#e8dacb]/40 text-[11px] text-[#8c7a6b] space-y-1.5">
+                                        ${catItems.map(item => `
+                                            <div class="flex justify-between items-center bg-[#fff8e7]/60 p-1.5 rounded-xl border border-[#e8dacb]/40">
+                                                <div class="truncate max-w-[60%]">
+                                                    <span class="font-medium text-[#5c4838] block truncate">${item.details || item.category}</span>
+                                                    <span class="text-[9px] text-[#8c7a6b]">${item.date} • ${item.account}</span>
+                                                </div>
+                                                <div class="flex items-center gap-2">
+                                                    <span class="font-bold text-[#5c4838]">RM ${item.amount.toFixed(2)}</span>
+                                                    <button onclick="confirmDeleteTransaction(${item.id})" class="text-rose-500 hover:text-rose-700 p-1 rounded-md hover:bg-rose-50 transition" title="Delete record">
+                                                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+
+            document.getElementById('main-content').innerHTML = html;
+            lucide.createIcons();
+
+            setTimeout(() => {
+                const ctx = document.getElementById('categoryChart')?.getContext('2d');
+                if (ctx) {
+                    const labels = Object.keys(appData.customCategories);
+                    const dataValues = labels.map(l => categorySums[l]);
+                    const bgColors = labels.map(l => appData.customCategories[l].color);
+
+                    new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                data: dataValues.every(v => v === 0) ? [1] : dataValues,
+                                backgroundColor: dataValues.every(v => v === 0) ? ['#e8dacb'] : bgColors,
+                                borderWidth: 2,
+                                borderColor: '#fcfcf6'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false }
+                            },
+                            cutout: '65%'
+                        }
+                    });
+                }
+            }, 50);
+        }
+
+        function openAddCategoryModal() {
+            let selectedIcon = CATEGORY_ICON_OPTIONS[0].name;
+            let selectedColor = COLOR_OPTIONS[0];
+
+            const html = `
+                <div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div class="cat-card w-full max-w-xs rounded-2xl p-5 border border-[#e8dacb] bg-[#fcfcf6]">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold text-sm text-[#5c4838]">Add New Category</h3>
+                            <button onclick="closeModal()" class="text-[#8c7a6b]"><i data-lucide="x" class="w-4 h-4"></i></button>
+                        </div>
+
+                        <label class="text-[11px] font-semibold text-[#8c7a6b] block mb-1">Category Name</label>
+                        <input id="new-cat-name" type="text" placeholder="e.g., Entertainment, Pets, Travel" class="w-full bg-[#fff8e7] border border-[#e8dacb] rounded-xl px-3 py-2 text-xs font-bold text-[#5c4838] mb-3 focus:outline-none">
+
+                        <label class="text-[11px] font-semibold text-[#8c7a6b] block mb-1">Select Icon</label>
+                        <div class="grid grid-cols-4 gap-2 mb-3 max-h-28 overflow-y-auto no-scrollbar p-1 bg-[#fff8e7] rounded-xl border border-[#e8dacb]" id="icon-picker-grid">
+                            ${CATEGORY_ICON_OPTIONS.map((ico, idx) => `
+                                <button type="button" onclick="selectCatIcon('${ico.name}', this)" class="p-2 rounded-lg border border-[#e8dacb] flex flex-col items-center justify-center bg-white hover:border-[#cfb291] ${idx === 0 ? 'ring-2 ring-[#cfb291]' : ''}">
+                                    <i data-lucide="${ico.name}" class="w-4 h-4 text-[#5c4838]"></i>
+                                </button>
+                            `).join('')}
+                        </div>
+
+                        <label class="text-[11px] font-semibold text-[#8c7a6b] block mb-1">Select Color</label>
+                        <div class="flex gap-2 mb-4" id="color-picker-grid">
+                            ${COLOR_OPTIONS.map((col, idx) => `
+                                <button type="button" onclick="selectCatColor('${col}', this)" class="w-6 h-6 rounded-full border border-black/10 ${idx === 0 ? 'ring-2 ring-offset-1 ring-[#5c4838]' : ''}" style="background-color: ${col}"></button>
+                            `).join('')}
+                        </div>
+
+                        <label class="text-[11px] font-semibold text-[#8c7a6b] block mb-1">Short Description (Optional)</label>
+                        <input id="new-cat-desc" type="text" placeholder="What is this for?" class="w-full bg-[#fff8e7] border border-[#e8dacb] rounded-xl px-3 py-2 text-xs text-[#5c4838] mb-4 focus:outline-none">
+
+                        <button onclick="saveNewCategory()" class="w-full bg-[#cfb291] text-white py-2.5 rounded-xl font-bold text-xs hover:bg-[#b89b7a] transition shadow-sm">
+                            Save Category
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('modal-container').innerHTML = html;
+            lucide.createIcons();
+            
+            window.tempCatIcon = selectedIcon;
+            window.tempCatColor = selectedColor;
+        }
+
+        function selectCatIcon(iconName, btn) {
+            window.tempCatIcon = iconName;
+            document.querySelectorAll('#icon-picker-grid button').forEach(b => b.classList.remove('ring-2', 'ring-[#cfb291]'));
+            btn.classList.add('ring-2', 'ring-[#cfb291]');
+        }
+
+        function selectCatColor(colorHex, btn) {
+            window.tempCatColor = colorHex;
+            document.querySelectorAll('#color-picker-grid button').forEach(b => b.classList.remove('ring-2', 'ring-offset-1', 'ring-[#5c4838]'));
+            btn.classList.add('ring-2', 'ring-offset-1', 'ring-[#5c4838]');
+        }
+
+        function saveNewCategory() {
+            const name = document.getElementById('new-cat-name').value.trim();
+            const desc = document.getElementById('new-cat-desc').value.trim() || 'Custom category';
+
+            if (!name) return;
+
+            appData.customCategories[name] = {
+                icon: window.tempCatIcon || 'shopping-bag',
+                color: window.tempCatColor || '#cfb291',
+                desc: desc
+            };
+
+            persistAppData();
+            closeModal();
+            if (currentPage === 'category') renderCategoryPage();
+            else renderOverview();
+        }
+
+        function openAddTransactionModal(type) {
+            const html = `
+                <div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div class="cat-card w-full max-w-xs rounded-2xl p-5 border border-[#e8dacb] bg-[#fcfcf6]">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold text-sm text-[#5c4838] capitalize">
+                                ${type === 'expense' ? '- Add Expense' : '+ Add Income'}
+                            </h3>
+                            <button onclick="closeModal()" class="text-[#8c7a6b]"><i data-lucide="x" class="w-4 h-4"></i></button>
+                        </div>
+
+                        <!-- Account Selection -->
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="text-[11px] font-semibold text-[#8c7a6b] block">Bank / Wallet Account</label>
+                            <button onclick="openAddAccountModal()" class="text-[10px] text-[#cfb291] font-bold underline">+ Add New Bank</button>
+                        </div>
+                        <select id="tx-acc-select" class="w-full bg-[#fff8e7] border border-[#e8dacb] rounded-xl px-3 py-2 text-xs font-bold text-[#5c4838] mb-3 focus:outline-none">
+                            ${appData.accounts.length === 0 ? '<option value="">No Accounts Added (Click + Add New Bank)</option>' : ''}
+                            ${appData.accounts.map(acc => `<option value="${acc.name}">${acc.name} (RM ${acc.balance.toFixed(2)})</option>`).join('')}
+                        </select>
+
+                        <!-- Amount -->
+                        <label class="text-[11px] font-semibold text-[#8c7a6b] block mb-1">Amount (RM)</label>
+                        <input id="tx-amount-input" type="number" step="0.01" placeholder="0.00" class="w-full bg-[#fff8e7] border border-[#e8dacb] rounded-xl px-3 py-2 text-sm font-bold text-[#5c4838] mb-3 focus:outline-none">
+
+                        <!-- Category -->
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="text-[11px] font-semibold text-[#8c7a6b] block">Category / Type</label>
+                            ${type === 'expense' ? `
+                                <button onclick="openAddCategoryModal()" class="text-[10px] text-[#cfb291] font-bold underline">+ New Category</button>
+                            ` : ''}
+                        </div>
+                        <select id="tx-cat-select" class="w-full bg-[#fff8e7] border border-[#e8dacb] rounded-xl px-3 py-2 text-xs font-bold text-[#5c4838] mb-3 focus:outline-none">
+                            ${type === 'expense' 
+                                ? Object.keys(appData.customCategories).map(c => `<option value="${c}">${c}</option>`).join('')
+                                : INCOME_LABELS.map(l => `<option value="${l}">${l}</option>`).join('')
+                            }
+                        </select>
+
+                        <!-- Details -->
+                        <label class="text-[11px] font-semibold text-[#8c7a6b] block mb-1">Note / Description</label>
+                        <input id="tx-details-input" type="text" placeholder="Coffee, chicken rice, salary, transfer..." class="w-full bg-[#fff8e7] border border-[#e8dacb] rounded-xl px-3 py-2 text-xs text-[#5c4838] mb-4 focus:outline-none">
+
+                        <button onclick="saveTransaction('${type}')" class="w-full bg-[#cfb291] text-white py-2.5 rounded-xl font-bold text-xs hover:bg-[#b89b7a] transition shadow-sm">
+                            Save Record
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('modal-container').innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function triggerSimulatedBankAlert() {
+            if (!appData.autoSyncEnabled) {
+                alert("Please enable Auto-Sync first!");
+                return;
+            }
+
+            closeModal();
+
+            const sampleAmounts = [15.50, 32.00, 88.00, 12.00, 6.50];
+            const sampleItems = ["Iced Coffee & Toast", "Groceries at Watsons", "Uniqlo T-Shirt", "Grab Ride", "Rice & Drinks"];
+            const sampleCats = ["Food & Drink", "Groceries", "Shopping & Clothes", "Travel & Fuel", "Food & Drink"];
+            
+            const randIdx = Math.floor(Math.random() * sampleAmounts.length);
+            const amount = sampleAmounts[randIdx];
+            const detail = sampleItems[randIdx];
+            const category = sampleCats[randIdx];
+            const targetAcc = appData.accounts[0] ? appData.accounts[0].name : "Touch 'n Go eWallet";
+
+            const toastHtml = `
+                <div id="sim-toast" class="fixed top-3 left-1/2 -translate-x-1/2 w-11/12 max-w-md bg-[#5c4838] text-white p-3.5 rounded-2xl shadow-xl z-50 flex items-center justify-between border border-[#cfb291]">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-xl bg-[#cfb291] flex items-center justify-center text-white">
+                            <i data-lucide="bell" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-[#e8dacb] font-semibold block uppercase">${targetAcc} Alert Detected</span>
+                            <p class="text-xs font-bold">Auto-Logged: RM ${amount.toFixed(2)} (${detail})</p>
+                        </div>
+                    </div>
+                    <span class="text-[10px] bg-emerald-500 text-white px-2 py-0.5 rounded-md font-bold">Saved</span>
+                </div>
+            `;
+
+            const toastContainer = document.createElement('div');
+            toastContainer.innerHTML = toastHtml;
+            document.body.appendChild(toastContainer);
+            lucide.createIcons();
+
+            const acc = appData.accounts.find(a => a.name === targetAcc);
+            if (acc) acc.balance -= amount;
+
+            const now = new Date();
+            appData.transactions.unshift({
+                id: Date.now(),
+                type: 'expense',
+                category: category,
+                amount: amount,
+                account: targetAcc,
+                time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                date: getLocalDateString(now),
+                details: "[Auto Notification Reader] " + detail
+            });
+
+            if (currentPage === 'overview') renderOverview();
+            else renderCategoryPage();
+
+            setTimeout(() => {
+                toastContainer.remove();
+            }, 3500);
+        }
+
+        function openSetBudgetModal() {
+            const recommended = (getTotalBalance() * 0.5).toFixed(2);
+            
+            const html = `
+                <div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div class="cat-card w-full max-w-xs rounded-2xl p-5 border border-[#e8dacb] bg-[#fcfcf6]">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold text-sm text-[#5c4838]">Set Target Budget</h3>
+                            <button onclick="closeModal()" class="text-[#8c7a6b]"><i data-lucide="x" class="w-4 h-4"></i></button>
+                        </div>
+
+                        <div class="bg-[#fff8e7] p-2.5 rounded-xl border border-[#e8dacb] mb-4 text-xs">
+                            <span class="font-bold text-[#5c4838] block mb-0.5">💡 Smart Suggestion:</span>
+                            <span class="text-[#8c7a6b]">Recommended monthly budget is <b>RM ${recommended}</b>.</span>
+                            <button onclick="document.getElementById('budget-input').value='${recommended}'" class="mt-1 text-[11px] text-[#cfb291] font-bold underline block">
+                                Use Recommended
+                            </button>
+                        </div>
+
+                        <label class="text-[11px] font-semibold text-[#8c7a6b] block mb-1">Monthly Target (RM)</label>
+                        <input id="budget-input" type="number" step="0.01" value="${appData.monthlyBudget}" class="w-full bg-[#fff8e7] border border-[#e8dacb] rounded-xl px-3 py-2 text-sm font-bold text-[#5c4838] mb-4 focus:outline-none">
+
+                        <button onclick="saveBudget()" class="w-full bg-[#cfb291] text-white py-2.5 rounded-xl font-bold text-xs hover:bg-[#b89b7a] transition shadow-sm">
+                            Save Target
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('modal-container').innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function saveBudget() {
+            const val = parseFloat(document.getElementById('budget-input').value);
+            if (!isNaN(val) && val >= 0) {
+                appData.monthlyBudget = val;
+                persistAppData();
+                closeModal();
+                renderOverview();
+            }
+        }
+
+        function openAddAccountModal() {
+            const html = `
+                <div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div class="cat-card w-full max-w-xs rounded-2xl p-5 border border-[#e8dacb] bg-[#fcfcf6]">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold text-sm text-[#5c4838]">Add New Bank / Wallet</h3>
+                            <button onclick="closeModal()" class="text-[#8c7a6b]"><i data-lucide="x" class="w-4 h-4"></i></button>
+                        </div>
+
+                        <label class="text-[11px] font-semibold text-[#8c7a6b] block mb-1">Select Bank / Wallet</label>
+                        <select id="acc-name-select" class="w-full bg-[#fff8e7] border border-[#e8dacb] rounded-xl px-3 py-2 text-xs font-bold text-[#5c4838] mb-3 focus:outline-none">
+                            ${BANK_OPTIONS.map(bank => `<option value="${bank}">${bank}</option>`).join('')}
+                        </select>
+
+                        <label class="text-[11px] font-semibold text-[#8c7a6b] block mb-1">Current Balance (RM)</label>
+                        <input id="acc-balance-input" type="number" step="0.01" value="0.00" class="w-full bg-[#fff8e7] border border-[#e8dacb] rounded-xl px-3 py-2 text-sm font-bold text-[#5c4838] mb-4 focus:outline-none">
+
+                        <button onclick="saveNewAccount()" class="w-full bg-[#cfb291] text-white py-2.5 rounded-xl font-bold text-xs hover:bg-[#b89b7a] transition">
+                            Save Account
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('modal-container').innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function saveNewAccount() {
+            const name = document.getElementById('acc-name-select').value;
+            const balance = parseFloat(document.getElementById('acc-balance-input').value) || 0;
+
+            appData.accounts.push({
+                id: 'acc_' + Date.now(),
+                name: name,
+                balance: balance
+            });
+
+            persistAppData();
+            closeModal();
+            renderOverview();
+        }
+
+        function openEditAccountModal(accId) {
+            const acc = appData.accounts.find(a => a.id === accId);
+            if (!acc) return;
+
+            const html = `
+                <div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div class="cat-card w-full max-w-xs rounded-2xl p-5 border border-[#e8dacb] bg-[#fcfcf6]">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold text-sm text-[#5c4838]">Edit ${acc.name}</h3>
+                            <button onclick="closeModal()" class="text-[#8c7a6b]"><i data-lucide="x" class="w-4 h-4"></i></button>
+                        </div>
+
+                        <label class="text-[11px] font-semibold text-[#8c7a6b] block mb-1">Money Left (RM)</label>
+                        <input id="edit-acc-balance" type="number" step="0.01" value="${acc.balance}" class="w-full bg-[#fff8e7] border border-[#e8dacb] rounded-xl px-3 py-2 text-sm font-bold text-[#5c4838] mb-4 focus:outline-none">
+
+                        <div class="flex gap-2">
+                            <button onclick="deleteAccount('${acc.id}')" class="w-1/3 bg-rose-100 text-rose-700 py-2.5 rounded-xl font-bold text-xs hover:bg-rose-200 transition">
+                                Delete
+                            </button>
+                            <button onclick="saveEditedAccount('${acc.id}')" class="w-2/3 bg-[#cfb291] text-white py-2.5 rounded-xl font-bold text-xs hover:bg-[#b89b7a] transition">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('modal-container').innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function saveEditedAccount(accId) {
+            const newBal = parseFloat(document.getElementById('edit-acc-balance').value);
+            const acc = appData.accounts.find(a => a.id === accId);
+            if (acc && !isNaN(newBal)) {
+                acc.balance = newBal;
+                persistAppData();
+                closeModal();
+                renderOverview();
+            }
+        }
+
+        function deleteAccount(accId) {
+            appData.accounts = appData.accounts.filter(a => a.id !== accId);
+            persistAppData();
+            closeModal();
+            renderOverview();
+        }
+
+        function closeModal() {
+            const container = document.getElementById('modal-container');
+            if (container) {
+                container.innerHTML = '';
+            }
+        }
+
+        function confirmDeleteTransaction(id) {
+            const tx = appData.transactions.find(t => t.id === id);
+            if (!tx) return;
+
+            const html = `
+                <div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div class="cat-card w-full max-w-xs rounded-2xl p-5 border border-[#e8dacb] bg-[#fcfcf6] text-center">
+                        <div class="w-10 h-10 rounded-full bg-rose-100 text-rose-600 mx-auto mb-3 flex items-center justify-center">
+                            <i data-lucide="trash-2" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-bold text-sm text-[#5c4838] mb-1">Delete Record?</h3>
+                        <p class="text-xs text-[#8c7a6b] mb-4">
+                            Are you sure you want to delete <b>RM ${tx.amount.toFixed(2)}</b> (${tx.category})? Your account balance will be restored.
+                        </p>
+
+                        <div class="flex gap-2">
+                            <button onclick="closeModal()" class="w-1/2 bg-[#fff8e7] text-[#5c4838] border border-[#e8dacb] py-2 rounded-xl font-bold text-xs hover:bg-[#e8dacb]/50 transition">
+                                Cancel
+                            </button>
+                            <button onclick="executeDeleteTransaction(${tx.id})" class="w-1/2 bg-rose-600 text-white py-2 rounded-xl font-bold text-xs hover:bg-rose-700 transition shadow-sm">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('modal-container').innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function executeDeleteTransaction(id) {
+            deleteTransaction(id);
+            closeModal();
+        }
+
+        function openNotificationSetupModal() {
+            const isNative = !!(window.CatChingNative && window.CatChingNative.getNativeVersion);
+            let hasAccess = false;
+            try { hasAccess = isNative && window.CatChingNative.hasNotificationAccess(); } catch (_) {}
+            const statusHtml = isNative
+                ? (hasAccess
+                    ? `<div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span class="font-bold">Android notification access enabled</span></div>`
+                    : `<div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span><span class="font-bold">Permission not enabled yet</span></div>`)
+                : `<div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span><span class="font-bold">Not available in Chrome PWA</span></div>`;
+            const buttonHtml = isNative
+                ? `<button onclick="window.CatChingNative.openNotificationAccessSettings()" class="w-full bg-[#cfb291] text-white py-2.5 rounded-xl font-bold text-xs hover:bg-[#b89b7a] transition">${hasAccess ? 'Open notification access settings' : 'Enable Android notification access'}</button>`
+                : `<p class="text-[11px] text-rose-700">Automatic notification reading requires the cat-ching Android app. The Chrome-installed PWA cannot read notifications from your bank or Touch ’n Go.</p>`;
+            const html = `
+                <div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div class="cat-card w-full max-w-xs rounded-2xl p-5 border border-[#e8dacb] bg-[#fcfcf6]">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold text-sm text-[#5c4838]">Automatic Transaction Sync</h3>
+                            <button onclick="closeModal()" class="text-[#8c7a6b]"><i data-lucide="x" class="w-4 h-4"></i></button>
+                        </div>
+                        <div class="space-y-3 text-xs text-[#5c4838] mb-4">
+                            <p class="text-[#8c7a6b]">cat-ching can read transaction-like Android notifications only in the native Android app and only after you grant Notification Access. Matching bank-outgoing and Touch ’n Go-incoming notifications are combined into one transfer to reduce duplicates.</p>
+                            <div class="bg-[#fff8e7] p-3 rounded-xl border border-[#e8dacb] space-y-1.5">
+                                <span class="font-bold block text-[11px] text-[#cfb291]">Status</span>
+                                ${statusHtml}
+                            </div>
+                            ${buttonHtml}
+                        </div>
+                        <button onclick="closeModal()" class="w-full border border-[#e8dacb] text-[#5c4838] py-2.5 rounded-xl font-bold text-xs">Close</button>
+                    </div>
+                </div>`;
+            document.getElementById('modal-container').innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function changeMonth(monthVal) {
+            appData.selectedMonthYear = monthVal;
+            if (currentPage === 'overview') {
+                renderOverview();
+            } else {
+                renderCategoryPage();
+            }
+        }
+
+        function switchPage(page) {
+            currentPage = page;
+            const overviewBtn = document.getElementById('nav-overview');
+            const categoryBtn = document.getElementById('nav-category');
+
+            if (page === 'overview') {
+                overviewBtn.className = "flex flex-col items-center gap-1 text-[#cfb291] transition";
+                overviewBtn.querySelector('div').className = "p-2 rounded-xl bg-[#fff8e7] border border-[#e8dacb]";
+                
+                categoryBtn.className = "flex flex-col items-center gap-1 text-[#8c7a6b] transition";
+                categoryBtn.querySelector('div').className = "p-2 rounded-xl bg-transparent";
+                
+                renderOverview();
+            } else if (page === 'category') {
+                categoryBtn.className = "flex flex-col items-center gap-1 text-[#cfb291] transition";
+                categoryBtn.querySelector('div').className = "p-2 rounded-xl bg-[#fff8e7] border border-[#e8dacb]";
+                
+                overviewBtn.className = "flex flex-col items-center gap-1 text-[#8c7a6b] transition";
+                overviewBtn.querySelector('div').className = "p-2 rounded-xl bg-transparent";
+                
+                renderCategoryPage();
+            }
+        }
+
+        function saveTransaction(type) {
+            const accName = document.getElementById('tx-acc-select').value;
+            const amount = parseFloat(document.getElementById('tx-amount-input').value);
+            const category = document.getElementById('tx-cat-select').value;
+            const details = document.getElementById('tx-details-input').value;
+
+            if (isNaN(amount) || amount <= 0) return;
+
+            const acc = appData.accounts.find(a => a.name === accName);
+            if (acc) {
+                if (type === 'expense') acc.balance -= amount;
+                else acc.balance += amount;
+            }
+
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            appData.transactions.unshift({
+                id: Date.now(),
+                type: type,
+                category: category,
+                amount: amount,
+                account: accName,
+                time: timeStr,
+                date: getLocalDateString(now),
+                details: details
+            });
+
+            persistAppData();
+            closeModal();
+            renderOverview();
+        }
+
+        function deleteTransaction(id) {
+            const tx = appData.transactions.find(t => t.id === id);
+            if (tx) {
+                if (tx.type === 'transfer' && tx.fromAccount && tx.toAccount) {
+                    const from = appData.accounts.find(a => a.name === tx.fromAccount);
+                    const to = appData.accounts.find(a => a.name === tx.toAccount);
+                    if (from) from.balance += tx.amount;
+                    if (to) to.balance -= tx.amount;
+                } else {
+                    const acc = appData.accounts.find(a => a.name === tx.account);
+                    if (acc) {
+                        if (tx.type === 'expense') acc.balance += tx.amount;
+                        else acc.balance -= tx.amount;
+                    }
+                }
+                appData.transactions = appData.transactions.filter(t => t.id !== id);
+                persistAppData();
+                if (currentPage === 'overview') {
+                    renderOverview();
+                } else {
+                    renderCategoryPage();
+                }
+            }
+        }
+
+        // Native Android notification bridge. This is intentionally inactive in a normal browser/PWA.
+        // The native Android listener queues only transaction-like notifications on-device.
+        function parseCatChingNotification(n) {
+            const body = [n.title || '', n.text || '', ...(Array.isArray(n.lines) ? n.lines : [])].join('\n');
+            const amountMatch = body.match(/\bRM\s*([0-9,]+(?:\.[0-9]{1,2})?)/i);
+            if (!amountMatch) return null;
+            const amount = Number(amountMatch[1].replace(/,/g, ''));
+            if (!Number.isFinite(amount) || amount <= 0) return null;
+            const lower = body.toLowerCase();
+            let direction = null;
+            if (/received money|received\s*rm|has transferred.*to you|you(?:'|’)ve received|money received|credited|duit diterima/.test(lower)) direction = 'in';
+            else if (/transfer successful|you transfer|transferred to|sent\s*rm|payment successful|paid\s*rm|debited|pemindahan berjaya/.test(lower)) direction = 'out';
+            if (!direction) return null;
+            const postedAt = Number(n.postedAt) || Date.now();
+            return { id: String(n.id), amount, direction, appLabel: String(n.appLabel || n.packageName || 'Unknown app'), packageName: String(n.packageName || ''), body, postedAt };
+        }
+
+        function isTouchNGoNotification(n) {
+            const label = (n.appLabel + ' ' + n.packageName).toLowerCase();
+            return label.includes('touch') || label.includes('tng') || label.includes('ewallet');
+        }
+
+        function findOrCreateNotificationAccount(label, isTng) {
+            const norm = String(label || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+            let account = appData.accounts.find(a => {
+                const name = a.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+                if (isTng) return name.includes('touchngo') || name.includes('tng');
+                return name && (norm.includes(name) || name.includes(norm));
+            });
+            if (!account && isTng) account = appData.accounts.find(a => /touch.?n.?go|tng/i.test(a.name));
+            // Do not guess which bank account was used. If no account name matches the app label,
+            // create a clearly named account so the notification is recorded without misattribution.
+            if (!account) {
+                let name = isTng ? "Touch 'n Go eWallet" : String(label || 'Unknown bank').trim();
+                if (appData.accounts.some(a => a.name === name)) name += ' (Notification)';
+                account = { id: 'auto_' + Date.now() + '_' + Math.floor(Math.random() * 10000), name, balance: 0 };
+                appData.accounts.push(account);
+            }
+            return account;
+        }
+
+        function notificationDateTime(postedAt) {
+            const d = new Date(postedAt);
+            return { date: getLocalDateString(d), time: d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) };
+        }
+
+        function alreadyRecordedNotificationIds(ids) {
+            return appData.transactions.some(tx => Array.isArray(tx.sourceNotificationIds) && ids.some(id => tx.sourceNotificationIds.includes(id)));
+        }
+
+        function recordNativeNotificationEvents() {
+            if (!window.CatChingNative || typeof window.CatChingNative.getPendingNotifications !== 'function') return;
+            let raw;
+            try { raw = JSON.parse(window.CatChingNative.getPendingNotifications() || '[]'); } catch (_) { return; }
+            if (!Array.isArray(raw) || !raw.length) return;
+            const now = Date.now();
+            const parsed = raw.map(parseCatChingNotification).filter(Boolean);
+            const ready = parsed.filter(n => now - n.postedAt >= 120000);
+            const handledIds = new Set();
+            let changed = false;
+
+            // Pair a bank outgoing transfer with the matching Touch 'n Go incoming notification.
+            for (const out of ready) {
+                if (out.direction !== 'out' || isTouchNGoNotification(out) || handledIds.has(out.id)) continue;
+                const incoming = ready.find(candidate => candidate.direction === 'in' && isTouchNGoNotification(candidate) && !handledIds.has(candidate.id) && Math.abs(candidate.amount - out.amount) < 0.011 && Math.abs(candidate.postedAt - out.postedAt) <= 5 * 60 * 1000);
+                if (!incoming) continue;
+                const ids = [out.id, incoming.id];
+                handledIds.add(out.id); handledIds.add(incoming.id);
+                if (!alreadyRecordedNotificationIds(ids)) {
+                    const from = findOrCreateNotificationAccount(out.appLabel, false);
+                    const to = findOrCreateNotificationAccount(incoming.appLabel, true);
+                    from.balance -= out.amount;
+                    to.balance += out.amount;
+                    const dt = notificationDateTime(Math.min(out.postedAt, incoming.postedAt));
+                    appData.transactions.unshift({
+                        id: Date.now() + Math.floor(Math.random() * 1000), type: 'transfer', category: 'Transfer', amount: out.amount,
+                        account: `${from.name} → ${to.name}`, fromAccount: from.name, toAccount: to.name,
+                        time: dt.time, date: dt.date, details: `Auto-detected transfer from ${from.name} to ${to.name}. Matched bank and Touch 'n Go notifications.`,
+                        sourceNotificationIds: ids
+                    });
+                    changed = true;
+                }
+            }
+
+            // Unpaired transactions are recorded after a short waiting period to allow paired notifications to arrive.
+            for (const n of ready) {
+                if (handledIds.has(n.id)) continue;
+                if (now - n.postedAt < 5 * 60 * 1000) continue;
+                handledIds.add(n.id);
+                if (alreadyRecordedNotificationIds([n.id])) continue;
+                const isTng = isTouchNGoNotification(n);
+                const account = findOrCreateNotificationAccount(n.appLabel, isTng);
+                const dt = notificationDateTime(n.postedAt);
+                const type = n.direction === 'out' ? 'expense' : 'income';
+                if (type === 'expense') account.balance -= n.amount; else account.balance += n.amount;
+                appData.transactions.unshift({
+                    id: Date.now() + Math.floor(Math.random() * 1000), type,
+                    category: type === 'expense' ? 'Other Expenses' : 'Transfer Received', amount: n.amount,
+                    account: account.name, time: dt.time, date: dt.date,
+                    details: `Auto-recorded from ${n.appLabel} notification: ${n.body.replace(/\s+/g, ' ').slice(0, 220)}`,
+                    sourceNotificationIds: [n.id]
+                });
+                changed = true;
+            }
+
+            // Drop unparsable transaction-like notifications after 24 hours so the queue cannot grow forever.
+            for (const n of raw) if (!parsed.some(p => p.id === String(n.id)) && now - (Number(n.postedAt) || now) > 24 * 60 * 60 * 1000) handledIds.add(String(n.id));
+            if (handledIds.size) {
+                try { window.CatChingNative.acknowledgeNotifications(JSON.stringify(Array.from(handledIds))); } catch (_) {}
+            }
+            if (changed) {
+                persistAppData();
+                if (currentPage === 'overview') renderOverview(); else renderCategoryPage();
+                const toast = document.createElement('div');
+                toast.className = 'fixed top-3 left-1/2 -translate-x-1/2 w-11/12 max-w-md bg-[#5c4838] text-white p-3 rounded-2xl shadow-xl z-50 text-xs font-bold text-center';
+                toast.textContent = 'cat-ching automatically recorded a transaction from your notification.';
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 3500);
+            }
+        }
+
+        // Poll only inside the native Android wrapper. The OS-side queue remains available if cat-ching is closed.
+        function startNativeNotificationSync() {
+            if (!window.CatChingNative || typeof window.CatChingNative.getPendingNotifications !== 'function') return;
+            recordNativeNotificationEvents();
+            setInterval(recordNativeNotificationEvents, 30000);
+            document.addEventListener('visibilitychange', () => { if (!document.hidden) recordNativeNotificationEvents(); });
+        }
+
+        // Register dummy service worker to satisfy PWA installation criteria in Chrome
+        if ('serviceWorker' in navigator) {
+            const swCode = "self.addEventListener('fetch', function(e) { e.respondWith(fetch(e.request)); });";
+            const blob = new Blob([swCode], { type: 'text/javascript' });
+            const swUrl = URL.createObjectURL(blob);
+            navigator.serviceWorker.register(swUrl).catch(() => {});
+        }
+
+        // Extra safety: flush the latest state when the page is hidden or closed.
+        document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') persistAppData(); });
+        window.addEventListener('pagehide', persistAppData);
+
+        // Initialize App
+        window.onload = function() {
+            persistAppData();
+            renderOverview();
+            startNativeNotificationSync();
+        };
+    </script>
+</body>
+</html>
