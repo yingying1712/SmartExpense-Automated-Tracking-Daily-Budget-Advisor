@@ -2,11 +2,9 @@
   "id": "./",
   "name": "cat-ching Expense Tracker",
   "short_name": "cat-ching",
-  "description": "Track your income, expenses, and daily budget.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#fff8e7",
   "theme_color": "#fff8e7",
   "icons": [
@@ -21,6 +19,12 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
