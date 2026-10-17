@@ -6,6 +6,7 @@
     <title>cat-ching Expense Tracker</title>
     
     <!-- PWA Installation Support -->
+    <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#fff8e7">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -1070,6 +1071,16 @@
         window.onload = function() {
             renderOverview();
         };
+    </script>
+
+    <!-- Register the PWA service worker -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./sw.js")
+            .catch(error => console.error("Service worker registration failed:", error));
+        });
+      }
     </script>
 </body>
 </html>
